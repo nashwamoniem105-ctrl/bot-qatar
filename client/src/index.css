@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --color-moi-teal: #008A95;
+  --color-moi-blue: #004A80;
+  --color-moi-bg: #E9F1F4;
+  --color-qatar-maroon: #8A1538;
+}
+
+@layer base {
+  body {
+    background-color: #E9F1F4;
+    color: #004A80;
+    direction: rtl;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer components {
+  .qatar-card {
+    background: white;
+    border-radius: 30px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .qatar-tab {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .qatar-tab-active {
+    border: 1px solid #004A80;
+  }
+
+  .qatar-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    outline: none;
+    text-align: right;
+    font-size: 16px;
+  }
+
+  .qatar-input:focus {
+    border-color: #004A80;
+  }
+
+  .qatar-btn-primary {
+    width: 100%;
+    padding: 15px;
+    background: #004A80;
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .qatar-btn-secondary {
+    width: 100%;
+    padding: 15px;
+    background: white;
+    color: #004A80;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    border: 1px solid #004A80;
+    cursor: pointer;
+  }
+}

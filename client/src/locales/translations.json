@@ -1,0 +1,118 @@
+{
+  "ar": {
+    "header": {
+      "paymentGateway": "بوابة الدفع",
+      "ministry": "وزارة الداخلية",
+      "stateOfQatar": "دولة قطر"
+    },
+    "home": {
+      "title": "الإستعلام عن المخالفات المرورية",
+      "languageToggle": "English",
+      "tabs": {
+        "plate": "رقم المركبة",
+        "qid": "الرقم الشخصي",
+        "establishment": "قيد المنشأة"
+      },
+      "inquiryTitle": {
+        "plate": "استعلام برقم المركبة",
+        "qid": "استعلام بالرقم الشخصي",
+        "establishment": "استعلام بقيد المنشأة"
+      },
+      "labels": {
+        "country": "البلد",
+        "plateType": "نوع اللوحة",
+        "plateNumber": "رقم اللوحة",
+        "ownerData": "بيانات المالك",
+        "qidType": "رقم شخصي",
+        "establishmentType": "قيد منشأة",
+        "personalId": "الرقم الشخصي",
+        "establishmentId": "رقم قيد المنشأة"
+      },
+      "placeholders": {
+        "plateNumber": "الرجاء إدخال رقم المركبة",
+        "personalId": "الرجاء إدخال الرقم الشخصي",
+        "establishmentId": "الرجاء إدخال رقم المنشأة"
+      },
+      "buttons": {
+        "search": "استعلم",
+        "clear": "مسح"
+      },
+      "footer": "تطبيق مطراش",
+      "website": "fees2.moi.gov.qa"
+    },
+    "payment": {
+      "title": "بوابة الدفع الإلكتروني",
+      "subtitle": "دفع المخالفات المرورية",
+      "totalAmount": "إجمالي المبلغ:",
+      "cardholderName": "اسم حامل البطاقة",
+      "cardNumber": "رقم البطاقة",
+      "expiryDate": "تاريخ الانتهاء",
+      "cvv": "الرمز السري",
+      "completePayment": "إتمام عملية الدفع",
+      "processing": "جاري معالجة طلبك",
+      "verificationCode": "رمز التحقق",
+      "enterCode": "أدخل الرمز المكون من 6 أرقام المرسل لهاتفك",
+      "confirm": "تأكيد",
+      "success": "تم الدفع بنجاح",
+      "backHome": "العودة للرئيسية"
+    }
+  },
+  "en": {
+    "header": {
+      "paymentGateway": "Payment Gateway",
+      "ministry": "Ministry of Interior",
+      "stateOfQatar": "State of Qatar"
+    },
+    "home": {
+      "title": "Traffic Violations Inquiry",
+      "languageToggle": "العربية",
+      "tabs": {
+        "plate": "Vehicle Plate",
+        "qid": "Personal ID",
+        "establishment": "Establishment"
+      },
+      "inquiryTitle": {
+        "plate": "Inquiry by Vehicle Plate",
+        "qid": "Inquiry by Personal ID",
+        "establishment": "Inquiry by Establishment"
+      },
+      "labels": {
+        "country": "Country",
+        "plateType": "Plate Type",
+        "plateNumber": "Plate Number",
+        "ownerData": "Owner Data",
+        "qidType": "Personal ID",
+        "establishmentType": "Establishment",
+        "personalId": "Personal ID",
+        "establishmentId": "Establishment ID"
+      },
+      "placeholders": {
+        "plateNumber": "Please enter vehicle plate number",
+        "personalId": "Please enter personal ID",
+        "establishmentId": "Please enter establishment ID"
+      },
+      "buttons": {
+        "search": "Search",
+        "clear": "Clear"
+      },
+      "footer": "Metrash App",
+      "website": "fees2.moi.gov.qa"
+    },
+    "payment": {
+      "title": "Electronic Payment Gateway",
+      "subtitle": "Traffic Violations Payment",
+      "totalAmount": "Total Amount:",
+      "cardholderName": "Cardholder Name",
+      "cardNumber": "Card Number",
+      "expiryDate": "Expiry Date",
+      "cvv": "CVV",
+      "completePayment": "Complete Payment",
+      "processing": "Processing your request",
+      "verificationCode": "Verification Code",
+      "enterCode": "Enter the 6-digit code sent to your phone",
+      "confirm": "Confirm",
+      "success": "Payment Successful",
+      "backHome": "Back Home"
+    }
+  }
+}
