@@ -174,20 +174,26 @@ export default function Home() {
         {/* Inquiry Type Tabs */}
         <div className="flex justify-between gap-2 mb-4">
           {[
-            { id: "plate", icon: <CarIcon active={inquiryType === "plate"} />, label: t("home.tabs.plate") },
-            { id: "qid", icon: <PersonIcon active={inquiryType === "qid"} />, label: t("home.tabs.qid") },
-            { id: "establishment", icon: <BuildingIcon active={inquiryType === "establishment"} />, label: t("home.tabs.establishment") }
+            { id: "plate", icon: "/icon-plate-new.png", label: t("home.tabs.plate") },
+            { id: "qid", icon: "/icon-qid-new.png", label: t("home.tabs.qid") },
+            { id: "establishment", icon: "/icon-establishment-new.png", label: t("home.tabs.establishment") }
           ].map(type => (
             <button
               key={type.id}
               onClick={() => setInquiryType(type.id as any)}
-              className={`flex-1 flex flex-col items-center justify-center p-2 rounded-xl border transition-all bg-white h-24 ${
+              className={`flex-1 flex flex-col items-center justify-center p-2 rounded-xl border transition-all bg-white h-28 ${
                 inquiryType === type.id 
-                ? "border-[#003E66] shadow-sm" 
+                ? "border-[#003E66] shadow-sm ring-1 ring-[#003E66]" 
                 : "border-gray-200"
               }`}
             >
-              <div className="mb-1">{type.icon}</div>
+              <div className="mb-1 w-14 h-14 flex items-center justify-center">
+                <img 
+                  src={type.icon} 
+                  alt={type.label} 
+                  className={`w-12 h-12 object-contain transition-all ${inquiryType === type.id ? "" : "opacity-40 grayscale"}`}
+                />
+              </div>
               <span className={`text-[13px] font-bold ${inquiryType === type.id ? "text-[#003E66]" : "text-gray-500"}`}>
                 {type.label}
               </span>
