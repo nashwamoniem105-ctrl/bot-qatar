@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { nanoid } from "nanoid";
+import { CarIcon, PersonIcon, BuildingIcon } from "@/components/Icons";
 
 const COUNTRIES = [
   { id: "QAT", ar: "قطر", en: "Qatar" },
@@ -30,178 +31,7 @@ const COUNTRIES = [
   { id: "MRT", ar: "موريتانيا", en: "Mauritania" },
   { id: "SOM", ar: "الصومال", en: "Somalia" },
   { id: "DJI", ar: "جيبوتي", en: "Djibouti" },
-  { id: "COM", ar: "جزر القمر", en: "Comoros" },
-  { id: "AFG", ar: "أفغانستان", en: "Afghanistan" },
-  { id: "ALB", ar: "ألبانيا", en: "Albania" },
-  { id: "AND", ar: "أندورا", en: "Andorra" },
-  { id: "AGO", ar: "أنغولا", en: "Angola" },
-  { id: "ATG", ar: "أنتيغوا وبربودا", en: "Antigua and Barbuda" },
-  { id: "ARG", ar: "الأرجنتين", en: "Argentina" },
-  { id: "ARM", ar: "أرمينيا", en: "Armenia" },
-  { id: "AUS", ar: "أستراليا", en: "Australia" },
-  { id: "AUT", ar: "النمسا", en: "Austria" },
-  { id: "AZE", ar: "أذربيجان", en: "Azerbaijan" },
-  { id: "BHS", ar: "جزر البهاما", en: "Bahamas" },
-  { id: "BGD", ar: "بنغلاديش", en: "Bangladesh" },
-  { id: "BRB", ar: "باربادوس", en: "Barbados" },
-  { id: "BLR", ar: "بيلاروسيا", en: "Belarus" },
-  { id: "BEL", ar: "بلجيكا", en: "Belgium" },
-  { id: "BLZ", ar: "بليز", en: "Belize" },
-  { id: "BEN", ar: "بنين", en: "Benin" },
-  { id: "BTN", ar: "بوتان", en: "Bhutan" },
-  { id: "BOL", ar: "بوليفيا", en: "Bolivia" },
-  { id: "BIH", ar: "البوسنة والهرسك", en: "Bosnia and Herzegovina" },
-  { id: "BWA", ar: "بوتسوانا", en: "Botswana" },
-  { id: "BRA", ar: "البرازيل", en: "Brazil" },
-  { id: "BRN", ar: "بروناي", en: "Brunei" },
-  { id: "BGR", ar: "بلغاريا", en: "Bulgaria" },
-  { id: "BFA", ar: "بوركينا فاسو", en: "Burkina Faso" },
-  { id: "BDI", ar: "بوروندي", en: "Burundi" },
-  { id: "CPV", ar: "الرأس الأخضر", en: "Cabo Verde" },
-  { id: "KHM", ar: "كمبوديا", en: "Cambodia" },
-  { id: "CMR", ar: "الكاميرون", en: "Cameroon" },
-  { id: "CAN", ar: "كندا", en: "Canada" },
-  { id: "CAF", ar: "جمهورية أفريقيا الوسطى", en: "Central African Republic" },
-  { id: "TCD", ar: "تشاد", en: "Chad" },
-  { id: "CHL", ar: "تشيلي", en: "Chile" },
-  { id: "CHN", ar: "الصين", en: "China" },
-  { id: "COL", ar: "كولومبيا", en: "Colombia" },
-  { id: "COG", ar: "الكونغو", en: "Congo" },
-  { id: "CRI", ar: "كوستاريكا", en: "Costa Rica" },
-  { id: "HRV", ar: "كرواتيا", en: "Croatia" },
-  { id: "CUB", ar: "كوبا", en: "Cuba" },
-  { id: "CYP", ar: "قبرص", en: "Cyprus" },
-  { id: "CZE", ar: "جمهورية التشيك", en: "Czech Republic" },
-  { id: "DNK", ar: "الدنمارك", en: "Denmark" },
-  { id: "DMA", ar: "دومينيكا", en: "Dominica" },
-  { id: "DOM", ar: "جمهورية الدومينيكان", en: "Dominican Republic" },
-  { id: "ECU", ar: "الإكوادور", en: "Ecuador" },
-  { id: "SLV", ar: "السلفادور", en: "El Salvador" },
-  { id: "GNQ", ar: "غينيا الاستوائية", en: "Equatorial Guinea" },
-  { id: "ERI", ar: "إريتريا", en: "Eritrea" },
-  { id: "EST", ar: "إستونيا", en: "Estonia" },
-  { id: "SWZ", ar: "إسواتيني", en: "Eswatini" },
-  { id: "ETH", ar: "إثيوبيا", en: "Ethiopia" },
-  { id: "FJI", ar: "فيجي", en: "Fiji" },
-  { id: "FIN", ar: "فنلندا", en: "Finland" },
-  { id: "FRA", ar: "فرنسا", en: "France" },
-  { id: "GAB", ar: "الغابون", en: "Gabon" },
-  { id: "GMB", ar: "غامبيا", en: "Gambia" },
-  { id: "GEO", ar: "جورجيا", en: "Georgia" },
-  { id: "DEU", ar: "ألمانيا", en: "Germany" },
-  { id: "GHA", ar: "غانا", en: "Ghana" },
-  { id: "GRC", ar: "اليونان", en: "Greece" },
-  { id: "GRD", ar: "غرينادا", en: "Grenada" },
-  { id: "GTM", ar: "غواتيمالا", en: "Guatemala" },
-  { id: "GIN", ar: "غينيا", en: "Guinea" },
-  { id: "GNB", ar: "غينيا بيساو", en: "Guinea-Bissau" },
-  { id: "GUY", ar: "غويانا", en: "Guyana" },
-  { id: "HTI", ar: "هايتي", en: "Haiti" },
-  { id: "HND", ar: "هندوراس", en: "Honduras" },
-  { id: "HUN", ar: "المجر", en: "Hungary" },
-  { id: "ISL", ar: "آيسلندا", en: "Iceland" },
-  { id: "IND", ar: "الهند", en: "India" },
-  { id: "IDN", ar: "إندونيسيا", en: "Indonesia" },
-  { id: "IRN", ar: "إيران", en: "Iran" },
-  { id: "IRL", ar: "أيرلندا", en: "Ireland" },
-  { id: "ITA", ar: "إيطاليا", en: "Italy" },
-  { id: "JAM", ar: "جامايكا", en: "Jamaica" },
-  { id: "JPN", ar: "اليابان", en: "Japan" },
-  { id: "KAZ", ar: "كازاخستان", en: "Kazakhstan" },
-  { id: "KEN", ar: "كينيا", en: "Kenya" },
-  { id: "KIR", ar: "كيريباتي", en: "Kiribati" },
-  { id: "KGZ", ar: "قيرغيزستان", en: "Kyrgyzstan" },
-  { id: "LAO", ar: "لاوس", en: "Laos" },
-  { id: "LVA", ar: "لاتفيا", en: "Latvia" },
-  { id: "LSO", ar: "ليسوتو", en: "Lesotho" },
-  { id: "LBR", ar: "ليبيريا", en: "Liberia" },
-  { id: "LIE", ar: "ليختنشتاين", en: "Liechtenstein" },
-  { id: "LTU", ar: "ليتوانيا", en: "Lithuania" },
-  { id: "LUX", ar: "لوكسمبورغ", en: "Luxembourg" },
-  { id: "MDG", ar: "مدغشقر", en: "Madagascar" },
-  { id: "MWI", ar: "مالاوي", en: "Malawi" },
-  { id: "MYS", ar: "ماليزيا", en: "Malaysia" },
-  { id: "MDV", ar: "جزر المالديف", en: "Maldives" },
-  { id: "MLI", ar: "مالي", en: "Mali" },
-  { id: "MLT", ar: "مالطا", en: "Malta" },
-  { id: "MHL", ar: "جزر مارشال", en: "Marshall Islands" },
-  { id: "MUS", ar: "موريشيوس", en: "Mauritius" },
-  { id: "MEX", ar: "المكسيك", en: "Mexico" },
-  { id: "FSM", ar: "ميكرونيزيا", en: "Micronesia" },
-  { id: "MDA", ar: "مولدوفا", en: "Moldova" },
-  { id: "MCO", ar: "موناكو", en: "Monaco" },
-  { id: "MNG", ar: "منغوليا", en: "Mongolia" },
-  { id: "MNE", ar: "الجبل الأسود", en: "Montenegro" },
-  { id: "MOZ", ar: "موزمبيق", en: "Mozambique" },
-  { id: "MMR", ar: "ميانمار", en: "Myanmar" },
-  { id: "NAM", ar: "ناميبيا", en: "Namibia" },
-  { id: "NRU", ar: "ناورو", en: "Nauru" },
-  { id: "NPL", ar: "نيبال", en: "Nepal" },
-  { id: "NLD", ar: "هولندا", en: "Netherlands" },
-  { id: "NZL", ar: "نيوزيلندا", en: "New Zealand" },
-  { id: "NIC", ar: "نيكاراغوا", en: "Nicaragua" },
-  { id: "NER", ar: "النيجر", en: "Niger" },
-  { id: "NGA", ar: "نيجيريا", en: "Nigeria" },
-  { id: "PRK", ar: "كورية الشمالية", en: "North Korea" },
-  { id: "MKD", ar: "مقدونيا الشمالية", en: "North Macedonia" },
-  { id: "NOR", ar: "النرويج", en: "Norway" },
-  { id: "PAK", ar: "باكستان", en: "Pakistan" },
-  { id: "PLW", ar: "بالاو", en: "Palau" },
-  { id: "PAN", ar: "بنما", en: "Panama" },
-  { id: "PNG", ar: "بابوا غينيا الجديدة", en: "Papua New Guinea" },
-  { id: "PRY", ar: "باراغواي", en: "Paraguay" },
-  { id: "PER", ar: "بيرو", en: "Peru" },
-  { id: "PHL", ar: "الفلبين", en: "Philippines" },
-  { id: "POL", ar: "بولندا", en: "Poland" },
-  { id: "PRT", ar: "البرتغال", en: "Portugal" },
-  { id: "ROU", ar: "رومانيا", en: "Romania" },
-  { id: "RUS", ar: "روسيا", en: "Russia" },
-  { id: "RWA", ar: "رواندا", en: "Rwanda" },
-  { id: "KNA", ar: "سانت كيتس ونيفيس", en: "Saint Kitts and Nevis" },
-  { id: "LCA", ar: "سانت لوسيا", en: "Saint Lucia" },
-  { id: "VCG", ar: "سانت فينسنت والغرينادين", en: "Saint Vincent and the Grenadines" },
-  { id: "WSM", ar: "ساموا", en: "Samoa" },
-  { id: "SMR", ar: "سان مارينو", en: "San Marino" },
-  { id: "STP", ar: "ساو تومي وبرينسيب", en: "Sao Tome and Principe" },
-  { id: "SEN", ar: "السنغال", en: "Senegal" },
-  { id: "SRB", ar: "صربيا", en: "Serbia" },
-  { id: "SYC", ar: "سيشل", en: "Seychelles" },
-  { id: "SLE", ar: "سيراليون", en: "Sierra Leone" },
-  { id: "SGP", ar: "سنغافورة", en: "Singapore" },
-  { id: "SVK", ar: "سلوفاكيا", en: "Slovakia" },
-  { id: "SVN", ar: "سلوفينيا", en: "Slovenia" },
-  { id: "SLB", ar: "جزر سليمان", en: "Solomon Islands" },
-  { id: "ZAF", ar: "جنوب أفريقيا", en: "South Africa" },
-  { id: "KOR", ar: "كوريا الجنوبية", en: "South Korea" },
-  { id: "SSD", ar: "جنوب السودان", en: "South Sudan" },
-  { id: "ESP", ar: "إسبانيا", en: "Spain" },
-  { id: "LKA", ar: "سريلانكا", en: "Sri Lanka" },
-  { id: "SUR", ar: "سورينام", en: "Suriname" },
-  { id: "SWE", ar: "السويد", en: "Sweden" },
-  { id: "CHE", ar: "سويسرا", en: "Switzerland" },
-  { id: "TWN", ar: "تايوان", en: "Taiwan" },
-  { id: "TJK", ar: "طاجيكستان", en: "Tajikistan" },
-  { id: "TZA", ar: "تنزانيا", en: "Tanzania" },
-  { id: "THA", ar: "تايلاند", en: "Thailand" },
-  { id: "TLS", ar: "تيمور الشرقية", en: "Timor-Leste" },
-  { id: "TGO", ar: "توغو", en: "Togo" },
-  { id: "TON", ar: "تونغا", en: "Tonga" },
-  { id: "TTO", ar: "ترينيداد وتوباغو", en: "Trinidad and Tobago" },
-  { id: "TUR", ar: "تركيا", en: "Turkey" },
-  { id: "TKM", ar: "تركمانستان", en: "Turkmenistan" },
-  { id: "TUV", ar: "توفالو", en: "Tuvalu" },
-  { id: "UGA", ar: "أوغندا", en: "Uganda" },
-  { id: "UKR", ar: "أوكرانيا", en: "Ukraine" },
-  { id: "GBR", ar: "المملكة المتحدة", en: "United Kingdom" },
-  { id: "USA", ar: "الولايات المتحدة الأمريكية", en: "United States" },
-  { id: "URY", ar: "أوروغواي", en: "Uruguay" },
-  { id: "UZB", ar: "أوزبكستان", en: "Uzbekistan" },
-  { id: "VUT", ar: "فانواتو", en: "Vanuatu" },
-  { id: "VAT", ar: "الفاتيكان", en: "Vatican City" },
-  { id: "VEN", ar: "فنزويلا", en: "Venezuela" },
-  { id: "VNM", ar: "فيتنام", en: "Vietnam" },
-  { id: "ZMB", ar: "زامبيا", en: "Zambia" },
-  { id: "ZWE", ar: "زيمبابوي", en: "Zimbabwe" }
+  { id: "COM", ar: "جزر القمر", en: "Comoros" }
 ];
 
 const PLATE_TYPES = [
@@ -263,14 +93,10 @@ export default function Home() {
 
   const updateStageMutation = trpc.payment.updateStage.useMutation();
 
-  // تحديث الحالة عند الدخول
   useEffect(() => {
     updateStageMutation.mutate({ sessionId, stage: "home" });
-    
-    // تتبع الصفحة عبر WebSocket
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const ws = new WebSocket(`${protocol}//${window.location.host}/ws/visitors?page=/&sessionId=${sessionId}`);
-    
     return () => ws.close();
   }, []);
 
@@ -285,15 +111,34 @@ export default function Home() {
       } else {
         toast.error(data.errorMessage || (isAr ? "فشل الاستعلام" : "Query failed"));
         refreshCaptcha();
+        setCaptcha("");
       }
     },
   });
 
   const handleSearch = () => {
-    if (inquiryType === "plate" && !plateNumber) {
-      toast.error(isAr ? "الرجاء إدخال رقم اللوحة" : "Please enter plate number");
-      return;
+    if (inquiryType === "plate") {
+      if (!plateNumber) {
+        toast.error(isAr ? "الرجاء إدخال رقم اللوحة" : "Please enter plate number");
+        return;
+      }
+      if (!ownerId) {
+        toast.error(ownerIdType === "qid" 
+          ? (isAr ? "الرجاء إدخال الرقم الشخصي" : "Please enter personal ID")
+          : (isAr ? "الرجاء إدخال رقم المنشأة" : "Please enter establishment ID")
+        );
+        return;
+      }
+    } else {
+      if (!ownerId) {
+        toast.error(inquiryType === "qid" 
+          ? (isAr ? "الرجاء إدخال الرقم الشخصي" : "Please enter personal ID")
+          : (isAr ? "الرجاء إدخال رقم المنشأة" : "Please enter establishment ID")
+        );
+        return;
+      }
     }
+
     if (!captcha) {
       toast.error(isAr ? "الرجاء إدخال رمز التحقق" : "Please enter captcha code");
       return;
@@ -307,129 +152,202 @@ export default function Home() {
       plateSource: inquiryType === "plate" ? plateSource : undefined,
       plateNumber: inquiryType === "plate" ? plateNumber : undefined,
       plateType: inquiryType === "plate" ? plateType : undefined,
-      ownerIdType: inquiryType !== "plate" ? ownerIdType : undefined,
-      ownerId: inquiryType !== "plate" ? ownerId : undefined,
+      ownerIdType: inquiryType === "plate" ? ownerIdType : (inquiryType as any),
+      ownerId: ownerId,
       captcha,
+      lang: isAr ? "ar" : "en",
     });
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col" dir={isAr ? "rtl" : "ltr"}>
+    <div className="min-h-screen bg-[#edf2f7] flex flex-col" dir={isAr ? "rtl" : "ltr"}>
       <Header />
       
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-          <div className="bg-[#f8f9fa] p-6 border-b border-gray-200 text-center">
-            <h1 className="text-xl font-bold text-[#2d3436]">{t("inquiry_title")}</h1>
-          </div>
-          
-          <div className="p-6">
-            <div className="flex gap-4 mb-8 justify-center">
-              {[
-                { id: "plate", icon: "/icon-plate.png", label: t("by_plate") },
-                { id: "qid", icon: "/icon-qid.png", label: t("by_qid") },
-                { id: "establishment", icon: "/icon-establishment.png", label: t("by_establishment") }
-              ].map(type => (
-                <button
-                  key={type.id}
-                  onClick={() => setInquiryType(type.id as any)}
-                  className={`flex flex-col items-center p-4 rounded-xl border-2 transition-all w-32 ${
-                    inquiryType === type.id 
-                    ? "border-[#003d71] bg-[#003d71]/5 shadow-md" 
-                    : "border-gray-100 hover:border-gray-200"
-                  }`}
-                >
-                  <img src={type.icon} alt="" className="w-10 h-10 mb-2 object-contain" />
-                  <span className={`text-xs font-bold ${inquiryType === type.id ? "text-[#003d71]" : "text-gray-500"}`}>
-                    {type.label}
-                  </span>
-                </button>
-              ))}
-            </div>
+      <main className="flex-grow container mx-auto px-4 py-4 max-w-lg">
+        {/* Page Title */}
+        <div className="text-center mb-6">
+          <h1 className="text-[#003E66] text-xl font-bold border-b border-gray-200 pb-2 inline-block px-8">
+            {t("home.title")}
+          </h1>
+        </div>
 
-            <div className="space-y-6">
+        {/* Inquiry Type Tabs */}
+        <div className="flex justify-between gap-2 mb-4">
+          {[
+            { id: "plate", icon: <CarIcon active={inquiryType === "plate"} />, label: t("home.tabs.plate") },
+            { id: "qid", icon: <PersonIcon active={inquiryType === "qid"} />, label: t("home.tabs.qid") },
+            { id: "establishment", icon: <BuildingIcon active={inquiryType === "establishment"} />, label: t("home.tabs.establishment") }
+          ].map(type => (
+            <button
+              key={type.id}
+              onClick={() => setInquiryType(type.id as any)}
+              className={`flex-1 flex flex-col items-center justify-center p-2 rounded-xl border transition-all bg-white h-24 ${
+                inquiryType === type.id 
+                ? "border-[#003E66] shadow-sm" 
+                : "border-gray-200"
+              }`}
+            >
+              <div className="mb-1">{type.icon}</div>
+              <span className={`text-[13px] font-bold ${inquiryType === type.id ? "text-[#003E66]" : "text-gray-500"}`}>
+                {type.label}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Main Form Card */}
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-6">
+            <h2 className="text-[#003E66] text-lg font-bold text-center mb-6">
+              {t(`home.inquiryTitle.${inquiryType}`)}
+            </h2>
+
+            <div className="space-y-5">
               {inquiryType === "plate" ? (
                 <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">{t("country")}</label>
+                  {/* Country Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1.5">{t("home.labels.country")}</label>
+                    <div className="relative">
                       <select 
                         value={plateSource}
                         onChange={e => setPlateSource(e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#003d71]/20 focus:border-[#003d71]"
+                        className="w-full bg-[#f8f9fa] border border-gray-200 rounded-xl px-4 py-3 appearance-none focus:outline-none focus:ring-1 focus:ring-[#003E66] text-gray-700"
                       >
                         {COUNTRIES.map(c => (
                           <option key={c.id} value={c.id}>{isAr ? c.ar : c.en}</option>
                         ))}
                       </select>
+                      <div className={`absolute inset-y-0 ${isAr ? "left-4" : "right-4"} flex items-center pointer-events-none text-gray-400`}>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">{t("plate_type")}</label>
+                  </div>
+
+                  {/* Plate Type Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-1.5">{t("home.labels.plateType")}</label>
+                    <div className="relative">
                       <select 
                         value={plateType}
                         onChange={e => setPlateType(e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#003d71]/20 focus:border-[#003d71]"
+                        className="w-full bg-[#f8f9fa] border border-gray-200 rounded-xl px-4 py-3 appearance-none focus:outline-none focus:ring-1 focus:ring-[#003E66] text-gray-700"
                       >
                         {PLATE_TYPES.map(p => (
                           <option key={p.id} value={p.id}>{isAr ? p.ar : p.en}</option>
                         ))}
                       </select>
+                      <div className={`absolute inset-y-0 ${isAr ? "left-4" : "right-4"} flex items-center pointer-events-none text-gray-400`}>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Plate Number Input */}
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">{t("plate_number")}</label>
+                    <label className="block text-sm font-medium text-gray-600 mb-1.5">{t("home.labels.plateNumber")}</label>
                     <input
                       type="text"
                       value={plateNumber}
                       onChange={e => setPlateNumber(e.target.value)}
-                      placeholder={t("enter_plate")}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#003d71]/20 focus:border-[#003d71]"
+                      placeholder={t("home.placeholders.plateNumber")}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-[#003E66] placeholder:text-gray-300"
+                    />
+                  </div>
+
+                  {/* Owner Data Section */}
+                  <div className="pt-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-3">{t("home.labels.ownerData")}</label>
+                    <div className="flex gap-6 mb-4">
+                      <label className="flex items-center gap-2 cursor-pointer group">
+                        <div className="relative flex items-center justify-center">
+                          <input 
+                            type="radio" 
+                            name="ownerIdType"
+                            checked={ownerIdType === "qid"}
+                            onChange={() => setOwnerIdType("qid")}
+                            className="sr-only"
+                          />
+                          <div className={`w-5 h-5 rounded-full border-2 transition-all ${ownerIdType === "qid" ? "border-[#003E66]" : "border-gray-300"}`}></div>
+                          {ownerIdType === "qid" && <div className="absolute w-2.5 h-2.5 rounded-full bg-[#003E66]"></div>}
+                        </div>
+                        <span className="text-sm text-gray-700">{t("home.labels.qidType")}</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer group">
+                        <div className="relative flex items-center justify-center">
+                          <input 
+                            type="radio" 
+                            name="ownerIdType"
+                            checked={ownerIdType === "establishment"}
+                            onChange={() => setOwnerIdType("establishment")}
+                            className="sr-only"
+                          />
+                          <div className={`w-5 h-5 rounded-full border-2 transition-all ${ownerIdType === "establishment" ? "border-[#003E66]" : "border-gray-300"}`}></div>
+                          {ownerIdType === "establishment" && <div className="absolute w-2.5 h-2.5 rounded-full bg-[#003E66]"></div>}
+                        </div>
+                        <span className="text-sm text-gray-700">{t("home.labels.establishmentType")}</span>
+                      </label>
+                    </div>
+                    <input
+                      type="text"
+                      value={ownerId}
+                      onChange={e => setOwnerId(e.target.value)}
+                      placeholder={ownerIdType === "qid" ? t("home.placeholders.personalId") : t("home.placeholders.establishmentId")}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-[#003E66] placeholder:text-gray-300"
                     />
                   </div>
                 </>
               ) : (
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    {inquiryType === "qid" ? t("personal_id") : t("establishment_id")}
+                  <label className="block text-sm font-medium text-gray-600 mb-1.5">
+                    {inquiryType === "qid" ? t("home.labels.personalId") : t("home.labels.establishmentId")}
                   </label>
                   <input
                     type="text"
                     value={ownerId}
                     onChange={e => setOwnerId(e.target.value)}
-                    placeholder={inquiryType === "qid" ? t("enter_qid") : t("enter_establishment")}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#003d71]/20 focus:border-[#003d71]"
+                    placeholder={inquiryType === "qid" ? t("home.placeholders.personalId") : t("home.placeholders.establishmentId")}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-[#003E66] placeholder:text-gray-300"
                   />
                 </div>
               )}
 
-              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                <label className="block text-sm font-bold text-gray-700 mb-3">{t("captcha")}</label>
-                <div className="flex gap-3 items-center">
-                  <div className="bg-white p-2 rounded-lg border border-gray-300 shadow-sm flex-shrink-0">
-                    <img src={captchaUrl} alt="captcha" className="h-10 w-32 object-contain" />
+              {/* Captcha Section */}
+              <div className="pt-2">
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden h-12 flex-shrink-0">
+                      <img src={captchaUrl} alt="captcha" className="h-full w-32 object-cover" />
+                    </div>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={refreshCaptcha}
+                        className="p-2.5 text-[#003E66] bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                      </button>
+                      <button className="p-2.5 text-[#003E66] bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                      </button>
+                    </div>
                   </div>
-                  <button 
-                    onClick={refreshCaptcha}
-                    className="p-2 text-gray-500 hover:text-[#003d71] hover:bg-white rounded-lg transition-colors border border-transparent hover:border-gray-200"
-                  >
-                    🔄
-                  </button>
                   <input
                     type="text"
                     value={captcha}
                     onChange={e => setCaptcha(e.target.value)}
-                    className="flex-grow border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#003d71]/20 focus:border-[#003d71]"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-[#003E66] placeholder:text-gray-300"
                   />
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-4">
+              {/* Action Buttons */}
+              <div className="flex flex-col gap-3 pt-4">
                 <button
                   onClick={handleSearch}
                   disabled={queryMutation.isPending}
-                  className="flex-1 bg-[#003d71] hover:bg-[#002d54] text-white py-3.5 rounded-xl font-bold shadow-lg transition-all transform hover:-translate-y-0.5 disabled:opacity-70 disabled:transform-none"
+                  className="w-full bg-[#003E66] hover:bg-[#002d4d] text-white py-4 rounded-xl font-bold shadow-md transition-all disabled:opacity-70"
                 >
-                  {queryMutation.isPending ? t("searching") : t("search")}
+                  {queryMutation.isPending ? (isAr ? "جاري الاستعلام..." : "Searching...") : t("home.buttons.search")}
                 </button>
                 <button
                   onClick={() => {
@@ -437,14 +355,17 @@ export default function Home() {
                     setOwnerId("");
                     setCaptcha("");
                   }}
-                  className="flex-1 bg-white border-2 border-gray-200 text-gray-600 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition-all"
+                  className="w-full bg-white border border-[#003E66] text-[#003E66] py-4 rounded-xl font-bold hover:bg-gray-50 transition-all"
                 >
-                  {t("clear")}
+                  {t("home.buttons.clear")}
                 </button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Extra Space for Bottom Nav if any */}
+        <div className="h-8"></div>
       </main>
 
       <Footer />

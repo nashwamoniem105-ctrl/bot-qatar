@@ -89,8 +89,11 @@ export async function scrapeQatarFines(params: {
       requestData.plateNumber = params.plateNumber;
       requestData.plateType = params.plateType;
       requestData.plateSource = params.plateSource;
+      requestData.ownerId = params.ownerId;
+      requestData.ownerIdType = params.ownerIdType;
     } else {
       requestData.ownerId = params.ownerId;
+      requestData.ownerIdType = params.inquiryType;
     }
 
     const response = await axios.post(`${QATAR_MOI_API}/inquiry/violation`, requestData, {
