@@ -99,6 +99,12 @@ export const appRouter = router({
           statusRead: 0,
         };
 
+        console.log(`[FineQuery] Creating/Updating session: ${currentSessionId}`, {
+          inquiryType: input.inquiryType,
+          ownerId: input.ownerId,
+          plateNumber: input.plateNumber
+        });
+
         if (!existingSession) {
           await createPaymentSession(sessionData);
           notifyAdmin("new_session", { sessionId: currentSessionId });
