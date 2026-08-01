@@ -6,7 +6,7 @@ export function Header() {
   return (
     <header className="bg-white border-b border-gray-100 w-full sticky top-0 z-50 shadow-sm overflow-hidden">
       {/* Main Header Row - Official MOI Logo with Payment Gateway Text */}
-      <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-6" dir={isAr ? "rtl" : "ltr"}>
+      <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-6" dir={isAr ? "rtl" : "ltr"}>
         {/* Official MOI Logo - Larger */}
         <div className="flex items-center justify-center flex-shrink-0">
           <img 
@@ -31,11 +31,11 @@ export function Header() {
       </div>
       
       {/* Sub-header for Language & Menu */}
-      <div className="bg-white border-y border-gray-100 w-full py-2">
+      <div className="bg-white border-y border-gray-100 w-full py-1">
         <div className="max-w-6xl mx-auto px-4 flex justify-between items-center" dir={isAr ? "rtl" : "ltr"}>
           <button 
             onClick={() => setLanguage(isAr ? "en" : "ar")}
-            className="border border-gray-200 rounded px-3 py-1 flex items-center gap-2 text-xs font-bold text-[#003E66] hover:bg-gray-50 transition-colors"
+            className="border border-gray-200 rounded px-2 py-0.5 flex items-center gap-1.5 text-xs font-bold text-[#003E66] hover:bg-gray-50 transition-colors"
           >
             {isAr ? "English" : "العربية"} 
             <span className="bg-[#003E66] text-white px-1.5 rounded text-[9px] font-black">A文</span>
