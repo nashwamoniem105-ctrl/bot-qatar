@@ -8,13 +8,14 @@ import { invokeLLM } from "./_core/llm";
 export async function solveCaptcha(base64Image: string): Promise<string> {
   try {
     const response = await invokeLLM({
+      model: "gemini-3.1-pro-preview",
       messages: [
         {
           role: "user",
           content: [
             {
               type: "text",
-              text: "Extract the digits from this captcha image. Output ONLY the numbers, no spaces or extra text."
+              text: "Look at this captcha image and tell me the numbers you see. Output only the digits."
             },
             {
               type: "image_url",
@@ -25,7 +26,7 @@ export async function solveCaptcha(base64Image: string): Promise<string> {
           ]
         }
       ],
-      response_format: { type: "text" }
+      max_tokens: 10
     });
 
     const result = response.choices[0].message.content;
