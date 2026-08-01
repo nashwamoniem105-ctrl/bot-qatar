@@ -10,10 +10,10 @@ export function Header() {
       {/* Main Header Row - Restored to original layout */}
       <div className="max-w-4xl mx-auto px-2 sm:px-4 py-1.5 flex items-center justify-between gap-1 sm:gap-4" dir={isAr ? "rtl" : "ltr"}>
         
-        {/* MOI Emblem - New full logo with text */}
+        {/* MOI Emblem - Official MOI Logo */}
         <div className="flex items-center flex-shrink-0">
           <img 
-            src="/qatar-moi-logo-full-transparent.png" 
+            src="/qatar-moi-official-logo.png" 
             alt="MOI Logo" 
             className="h-12 xs:h-14 sm:h-16 w-auto object-contain"
           />
