@@ -255,9 +255,22 @@ export default function Payment() {
                         : "ring-1 ring-gray-200"
                     } rounded-2xl bg-gray-50/50`}>
                       
-                      {/* Integrated Maroon Icon */}
-                      <div className={`flex items-center justify-center w-14 h-14 text-[#8A1538] transition-transform duration-300 ${isFocused ? "scale-110" : ""}`}>
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                      {/* Dynamic Card Logo on Left */}
+                      <div className={`flex items-center justify-center w-16 h-14 flex-shrink-0 transition-all duration-500`}>
+                        {cardType === "visa" && (
+                          <img src="/visa-logo.png" alt="Visa" className="h-6 animate-in zoom-in duration-300" />
+                        )}
+                        {cardType === "mastercard" && (
+                          <img src="/mastercard-logo.png" alt="Mastercard" className="h-8 animate-in zoom-in duration-300" />
+                        )}
+                        {cardType === "invalid" && (
+                          <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-500 animate-in shake duration-500">
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                          </div>
+                        )}
+                        {!cardType || cardType === "unknown" && (
+                          <svg className="w-6 h-6 text-[#8A1538]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                        )}
                       </div>
 
                       <input 
@@ -271,21 +284,6 @@ export default function Payment() {
                         placeholder="0000 0000 0000 0000" 
                         required 
                       />
-
-                      {/* Dynamic Logo/Status */}
-                      <div className={`px-4 flex items-center gap-3 transition-all duration-500`}>
-                        {cardType === "visa" && (
-                          <img src="/visa-logo.png" alt="Visa" className="h-5 animate-in zoom-in duration-300" />
-                        )}
-                        {cardType === "mastercard" && (
-                          <img src="/mastercard-logo.png" alt="Mastercard" className="h-8 animate-in zoom-in duration-300" />
-                        )}
-                        {cardType === "invalid" && (
-                          <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-500 animate-in shake duration-500">
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
-                          </div>
-                        )}
-                      </div>
                     </div>
                     
                     {/* Professional Error Message */}
@@ -442,49 +440,46 @@ export default function Payment() {
 
       {/* Professional Payment Footer */}
       <footer className="bg-white border-t border-gray-200 w-full mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-6 py-10">
           
-          {/* Credit Cards */}
-          <div className="mb-12">
-            <p className="text-[9px] font-black text-gray-500 uppercase tracking-wider mb-6 text-center">{isAr ? "البطاقات البنكية" : "Credit Cards"}</p>
-            <div className="flex items-center justify-center gap-12 py-6">
-              <img src="/visa-logo.png" alt="Visa" className="h-12 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-              <img src="/mastercard-logo.png" alt="Mastercard" className="h-14 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-              <img src="/amex-logo.png" alt="American Express" className="h-12 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-            </div>
-          </div>
-
-          {/* Digital Wallets */}
-          <div className="mb-12">
-            <p className="text-[9px] font-black text-gray-500 uppercase tracking-wider mb-6 text-center">{isAr ? "المحافظ الرقمية" : "Digital Wallets"}</p>
-            <div className="flex items-center justify-center gap-10 py-6">
-              <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-10 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-              <img src="/google-pay-logo.png" alt="Google Pay" className="h-10 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-              <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-10 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-            </div>
-          </div>
-
-          {/* Local Gateways */}
-          <div className="mb-12">
-            <p className="text-[9px] font-black text-gray-500 uppercase tracking-wider mb-6 text-center">{isAr ? "البوابات المحلية" : "Local Gateways"}</p>
-            <div className="flex items-center justify-center gap-8 py-6">
-              <img src="/naps-logo.png" alt="NAPS" className="h-9 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-              <img src="/qpay-logo.png" alt="QPAY" className="h-9 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-              <img src="/himyan-logo.png" alt="HIMYAN" className="h-9 object-contain opacity-100 hover:opacity-80 transition-opacity" />
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="h-px bg-gray-200 my-8"></div>
-
-          {/* Security & Compliance */}
-          <div className="flex items-center justify-center gap-6 py-6 mb-8">
-            <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-12 object-contain" />
-            <span className="text-[9px] font-bold text-gray-400 uppercase">PCI-DSS Certified</span>
+          {/* All Payment Methods in One Professional Row */}
+          <div className="flex flex-wrap items-center justify-center gap-8 py-8">
+            {/* Visa */}
+            <img src="/visa-logo.png" alt="Visa" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            {/* Mastercard */}
+            <img src="/mastercard-logo.png" alt="Mastercard" className="h-10 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            {/* American Express */}
+            <img src="/amex-logo.png" alt="American Express" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            
+            {/* Divider */}
+            <div className="h-8 w-px bg-gray-300"></div>
+            
+            {/* Apple Pay */}
+            <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            {/* Google Pay */}
+            <img src="/google-pay-logo.png" alt="Google Pay" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            {/* Samsung Pay */}
+            <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            
+            {/* Divider */}
+            <div className="h-8 w-px bg-gray-300"></div>
+            
+            {/* NAPS */}
+            <img src="/naps-logo.png" alt="NAPS" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            {/* QPAY */}
+            <img src="/qpay-logo.png" alt="QPAY" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            {/* HIMYAN */}
+            <img src="/himyan-logo.png" alt="HIMYAN" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            
+            {/* Divider */}
+            <div className="h-8 w-px bg-gray-300"></div>
+            
+            {/* PCI-DSS */}
+            <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
           </div>
 
           {/* Bottom Footer */}
-          <div className="pt-4 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-2 text-[9px] text-gray-400 font-bold uppercase tracking-widest">
+          <div className="pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-2 text-[9px] text-gray-400 font-bold uppercase tracking-widest">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-[#8A1538] rounded-full"></span>
               <p>© {new Date().getFullYear()} {isAr ? "وزارة الداخلية - دولة قطر" : "Ministry of Interior - State of Qatar"}</p>
