@@ -50,116 +50,120 @@ export default function ViolationsResults() {
 
   const violations = (data?.selectedFines as any[]) || [];
   const totalAmount = data?.totalAmount || "0";
+  const hasViolations = violations.length > 0;
+
+  // استخراج البيانات لعرضها في الصندوق الأزرق
+  const displayId = data?.qidNumber || data?.establishmentId || data?.plateNumber || "-";
+  const displayTitle = data?.qidNumber 
+    ? (isAr ? "الرقم الشخصي" : "Personal ID") 
+    : data?.establishmentId 
+      ? (isAr ? "رقم المنشأة" : "Establishment ID")
+      : (isAr ? "رقم اللوحة" : "Plate Number");
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]" dir={isAr ? "rtl" : "ltr"}>
+    <div className="min-h-screen bg-[#F1F5F9]" dir={isAr ? "rtl" : "ltr"}>
       <Header />
       
-      <main className="container mx-auto px-4 py-12 max-w-5xl">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-[#003E66] mb-2">
-              {isAr ? "تفاصيل المخالفات المرورية" : "Traffic Violations Details"}
-            </h1>
-            <p className="text-gray-500 text-sm">
-              {isAr ? "عرض جميع المخالفات المسجلة على المركبة" : "View all recorded violations for the vehicle"}
-            </p>
+      <main className="container mx-auto px-4 py-8 max-w-2xl">
+        {/* Page Title */}
+        <div className="text-center mb-8">
+          <h1 className="text-[#003E66] text-2xl font-bold">
+            {isAr ? "دفع المخالفات المرورية" : "Traffic Violations Payment"}
+          </h1>
+        </div>
+
+        {/* Blue Info Box - Official Qatar Style */}
+        <div className="bg-[#003E66] rounded-xl overflow-hidden shadow-lg mb-6 relative">
+          {/* Decorative Background Pattern (Optional) */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M0 100 L100 0 L100 100 Z" fill="white" />
+            </svg>
           </div>
-          <Button variant="outline" className="border-[#003E66] text-[#003E66]" onClick={() => setLocation("/")}>
-            {isAr ? "بحث جديد" : "New Search"}
-          </Button>
-        </div>
 
-        {/* Summary Card - Official Qatar Style */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <Card className="border-none shadow-sm bg-white">
-            <CardContent className="p-6 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#E9F1F4] flex items-center justify-center">
-                <svg className="w-6 h-6 text-[#003E66]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
+          <div className="p-6 text-white text-center relative z-10">
+            <h2 className="text-xl font-bold mb-6 border-b border-white/20 pb-4">
+              {isAr ? "بيانات المركبة" : "Vehicle Details"}
+            </h2>
+            
+            <div className="space-y-6">
               <div>
-                <p className="text-xs text-gray-500 uppercase">{isAr ? "إجمالي المخالفات" : "Total Violations"}</p>
-                <p className="text-xl font-bold text-[#003E66]">{violations.length}</p>
+                <p className="text-sm opacity-80 mb-1">{displayTitle}</p>
+                <p className="text-2xl font-bold tracking-wider text-[#93C5FD]">{displayId}</p>
               </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="border-none shadow-sm bg-white">
-            <CardContent className="p-6 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#FDF2F2] flex items-center justify-center">
-                <svg className="w-6 h-6 text-[#8C1D3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
+
               <div>
-                <p className="text-xs text-gray-500 uppercase">{isAr ? "المبلغ الإجمالي" : "Total Amount"}</p>
-                <p className="text-xl font-bold text-[#8C1D3D]">{totalAmount} {isAr ? "ر.ق" : "QAR"}</p>
+                <p className="text-sm opacity-80 mb-1">{isAr ? "تاريخ انتهاء الرخصة" : "License Expiry Date"}</p>
+                <p className="text-xl font-bold">-</p>
               </div>
-            </CardContent>
-          </Card>
 
-          <Card className="border-none shadow-sm bg-[#003E66] text-white">
-            <CardContent className="p-6 flex items-center justify-center h-full">
-              <Button 
-                className="w-full bg-[#8C1D3D] hover:bg-[#6b162e] text-white font-bold py-6 rounded-lg"
-                onClick={() => setLocation(`/payment?session=${sessionId}`)}
-              >
-                {isAr ? "دفع المخالفات" : "Pay Violations"}
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Violations Table - Official MOI Qatar Layout */}
-        <Card className="border-none shadow-sm overflow-hidden bg-white">
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-right">
-                <thead className="bg-[#F8FAFC] text-[#003E66] border-b">
-                  <tr>
-                    <th className="px-6 py-4 font-bold">{isAr ? "رقم المخالفة" : "Violation No."}</th>
-                    <th className="px-6 py-4 font-bold">{isAr ? "تاريخ المخالفة" : "Date"}</th>
-                    <th className="px-6 py-4 font-bold">{isAr ? "وصف المخالفة" : "Description"}</th>
-                    <th className="px-6 py-4 font-bold">{isAr ? "الموقع" : "Location"}</th>
-                    <th className="px-6 py-4 font-bold">{isAr ? "القيمة (ر.ق)" : "Amount (QAR)"}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
-                  {violations.length > 0 ? (
-                    violations.map((v, i) => (
-                      <tr key={i} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 font-medium text-[#003E66]">{v.fineNumber}</td>
-                        <td className="px-6 py-4 text-gray-600">{v.fineDate}</td>
-                        <td className="px-6 py-4 text-gray-700 font-medium">{isAr ? v.descriptionAr : v.description}</td>
-                        <td className="px-6 py-4 text-gray-600">{isAr ? v.locationAr : v.location}</td>
-                        <td className="px-6 py-4 font-bold text-[#8C1D3D]">{v.amount}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
-                        {isAr ? "لا توجد بيانات متاحة" : "No data available"}
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+              <div>
+                <p className="text-sm opacity-80 mb-1">{isAr ? "النوع" : "Type"}</p>
+                <p className="text-xl font-bold">-</p>
+              </div>
             </div>
-          </CardContent>
-        </Card>
-        
-        <div className="mt-8 bg-blue-50 border border-blue-100 p-4 rounded-lg flex items-start gap-3">
-          <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-          </svg>
-          <p className="text-sm text-blue-800">
-            {isAr 
-              ? "ملاحظة: يتم تحديث البيانات مباشرة من قاعدة بيانات وزارة الداخلية. يرجى التأكد من دفع المخالفات في الوقت المحدد لتجنب أي غرامات إضافية." 
-              : "Note: Data is updated directly from the Ministry of Interior database. Please ensure fines are paid on time to avoid any additional penalties."}
-          </p>
+          </div>
         </div>
+
+        {/* Results Section */}
+        {!hasViolations ? (
+          /* No Violations - Green Style */
+          <div className="bg-white rounded-2xl shadow-sm p-8 text-center border border-gray-100">
+            <p className="text-[#10B981] text-2xl font-bold mb-8">
+              {isAr ? "لا توجد مخالفات" : "No Violations"}
+            </p>
+            <Button 
+              onClick={() => setLocation("/")}
+              className="bg-white border border-gray-200 text-gray-600 px-10 py-6 rounded-xl hover:bg-gray-50 transition-all text-lg"
+            >
+              {isAr ? "الرجوع" : "Back"}
+            </Button>
+          </div>
+        ) : (
+          /* Has Violations - List Style */
+          <div className="space-y-4">
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+              <div className="p-4 bg-gray-50 border-b flex justify-between items-center">
+                <span className="font-bold text-[#003E66]">
+                  {isAr ? `عدد المخالفات: ${violations.length}` : `Violations Count: ${violations.length}`}
+                </span>
+                <span className="font-bold text-[#8C1D3D]">
+                  {isAr ? `الإجمالي: ${totalAmount} ر.ق` : `Total: ${totalAmount} QAR`}
+                </span>
+              </div>
+              <div className="divide-y">
+                {violations.map((v, i) => (
+                  <div key={i} className="p-5 hover:bg-gray-50 transition-colors">
+                    <div className="flex justify-between mb-2">
+                      <span className="text-[#003E66] font-bold">#{v.fineNumber}</span>
+                      <span className="text-[#8C1D3D] font-bold">{v.amount} {isAr ? "ر.ق" : "QAR"}</span>
+                    </div>
+                    <p className="text-gray-700 text-sm mb-1">{isAr ? v.descriptionAr : v.description}</p>
+                    <div className="flex justify-between text-xs text-gray-400">
+                      <span>{v.fineDate}</span>
+                      <span>{isAr ? v.locationAr : v.location}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Button 
+              className="w-full bg-[#8C1D3D] hover:bg-[#6b162e] text-white font-bold py-7 rounded-2xl text-xl shadow-lg shadow-maroon-900/20 transition-all"
+              onClick={() => setLocation(`/payment?session=${sessionId}`)}
+            >
+              {isAr ? "دفع المخالفات" : "Pay Violations"}
+            </Button>
+            
+            <Button 
+              variant="ghost"
+              className="w-full text-gray-500 py-4"
+              onClick={() => setLocation("/")}
+            >
+              {isAr ? "بحث جديد" : "New Search"}
+            </Button>
+          </div>
+        )}
       </main>
 
       <Footer />
