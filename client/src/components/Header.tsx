@@ -6,25 +6,25 @@ export function Header() {
   return (
     <header className="bg-white border-b border-gray-100 w-full sticky top-0 z-50 shadow-sm overflow-hidden">
       {/* Main Header Row - Official MOI Logo with Payment Gateway Text */}
-      <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-6" dir={isAr ? "rtl" : "ltr"}>
+      <div className="max-w-6xl mx-auto px-4 py-1.5 flex items-center justify-between gap-4" dir={isAr ? "rtl" : "ltr"}>
         {/* Official MOI Logo - Larger */}
         <div className="flex items-center justify-center flex-shrink-0">
           <img 
             src="/qatar-moi-official.jpg" 
             alt="Ministry of Interior - State of Qatar" 
-            className="h-24 sm:h-28 w-auto object-contain"
+            className="h-16 sm:h-20 w-auto object-contain"
           />
         </div>
         
         {/* Vertical Divider - Centered */}
-        <div className="h-24 sm:h-28 w-[2.5px] bg-[#8A1538] flex-shrink-0"></div>
+        <div className="h-16 sm:h-20 w-[2px] bg-[#8A1538] flex-shrink-0"></div>
         
         {/* Payment Gateway Text - Bold and Spaced */}
-        <div className={`flex flex-col ${isAr ? "items-end" : "items-start"} flex-grow justify-center gap-3`}>
-          <span className="text-2xl sm:text-3xl font-black text-[#8A1538] leading-tight">
+        <div className={`flex flex-col ${isAr ? "items-end" : "items-start"} flex-grow justify-center gap-1.5`}>
+          <span className="text-lg sm:text-xl font-black text-[#8A1538] leading-tight">
             {isAr ? "بوابة الدفع" : "Payment Gateway"}
           </span>
-          <span className="text-lg sm:text-xl font-black text-black leading-tight">
+          <span className="text-sm sm:text-base font-black text-black leading-tight">
             {isAr ? "Payment Gateway" : "بوابة الدفع"}
           </span>
         </div>
