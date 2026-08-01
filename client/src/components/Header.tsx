@@ -18,13 +18,13 @@ export function Header() {
         {/* Vertical Line and Payment Gateway - More compact for mobile */}
         <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink min-w-0">
           {/* Vertical Divider - maroon color */}
-          <div className="h-7 sm:h-10 w-[1.5px] bg-[#8A1538] flex-shrink-0"></div>
+          <div className="h-12 sm:h-16 w-[2px] bg-[#8A1538] flex-shrink-0"></div>
           {/* Payment Gateway Text - Responsive font sizes */}
           <div className={`flex flex-col ${isAr ? "items-end" : "items-start"} min-w-0 overflow-hidden`}>
-            <span className="text-[13px] xs:text-[15px] sm:text-[18px] font-bold text-[#8A1538] leading-tight whitespace-nowrap truncate">
+            <span className="text-[16px] xs:text-[18px] sm:text-[24px] font-black text-[#8A1538] leading-tight whitespace-nowrap truncate">
               {isAr ? "بوابة الدفع" : "Payment Gateway"}
             </span>
-            <span className="text-[9px] xs:text-[10px] sm:text-[12px] font-medium text-black leading-tight whitespace-nowrap truncate">
+            <span className="text-[11px] xs:text-[12px] sm:text-[14px] font-bold text-black leading-tight whitespace-nowrap truncate">
               {isAr ? "Payment Gateway" : "بوابة الدفع"}
             </span>
           </div>
