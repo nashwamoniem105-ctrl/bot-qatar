@@ -1,85 +1,51 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useLocation } from "wouter";
-
 export function Header() {
   const { lang, setLanguage } = useLanguage();
-  const [, navigate] = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
   const isAr = lang === "ar";
-
-  const menuItems = [
-    { label: isAr ? "الرئيسية" : "Home", href: "/" },
-    { label: isAr ? "الاستعلام" : "Inquiry", href: "/inquiry" },
-    { label: isAr ? "الدفع" : "Payment", href: "/payment" },
-    { label: isAr ? "الاتصال" : "Contact", href: "/contact" },
-  ];
-
   return (
-    <header className="bg-white w-full sticky top-0 z-50 shadow-sm">
-      {/* Main Header */}
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center" dir={isAr ? "rtl" : "ltr"}>
-        <img 
-          src="/qatar-moi-official-logo.png" 
-          alt="MOI Logo" 
-          className="h-16 w-auto object-contain"
-        />
-        <h1 className="text-2xl font-black text-[#8A1538]">{isAr ? "بوابة الدفع" : "Payment Gateway"}</h1>
+    <header className="bg-white border-b border-gray-100 w-full sticky top-0 z-50 shadow-sm overflow-hidden">
+      {/* Main Header Row - Optimized for all mobile screens */}
+      <div className="max-w-4xl mx-auto px-2 sm:px-4 py-1.5 flex items-center justify-between gap-1 sm:gap-4" dir={isAr ? "rtl" : "ltr"}>
+        {/* MOI Emblem - Scaled for mobile */}
+        <div className="flex items-center flex-shrink-0">
+          <img 
+            src="/qatar-moi-logo-new.png" 
+            alt="MOI Logo" 
+            className="h-12 xs:h-14 sm:h-16 w-auto object-contain"
+          />
+        </div>
+        {/* Vertical Line and Payment Gateway - More compact for mobile */}
+        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink min-w-0">
+          {/* Vertical Divider - maroon color */}
+          <div className="h-7 sm:h-10 w-[1.5px] bg-[#8A1538] flex-shrink-0"></div>
+          {/* Payment Gateway Text - Responsive font sizes */}
+          <div className={`flex flex-col ${isAr ? "items-end" : "items-start"} min-w-0 overflow-hidden`}>
+            <span className="text-[13px] xs:text-[15px] sm:text-[18px] font-bold text-[#8A1538] leading-tight whitespace-nowrap truncate">
+              {isAr ? "بوابة الدفع" : "Payment Gateway"}
+            </span>
+            <span className="text-[9px] xs:text-[10px] sm:text-[12px] font-medium text-black leading-tight whitespace-nowrap truncate">
+              {isAr ? "Payment Gateway" : "بوابة الدفع"}
+            </span>
+          </div>
+        </div>
       </div>
-
-      {/* Navigation Bar */}
-      <div className="bg-[#8A1538] text-white">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center" dir={isAr ? "rtl" : "ltr"}>
-          
-          {/* Desktop Menu */}
-          <nav className="hidden md:flex gap-8">
-            {menuItems.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => navigate(item.href)}
-                className="text-sm font-bold hover:opacity-80 transition-opacity"
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex flex-col gap-1.5"
-          >
-            <div className="w-6 h-0.5 bg-white"></div>
-            <div className="w-6 h-0.5 bg-white"></div>
-            <div className="w-6 h-0.5 bg-white"></div>
-          </button>
-
-          {/* Language Toggle */}
+      {/* Sub-header for Language - Slimmer for mobile */}
+      <div className="bg-white border-y border-gray-100 w-full py-1">
+        <div className="max-w-4xl mx-auto px-3 flex justify-between items-center" dir={isAr ? "rtl" : "ltr"}>
           <button 
             onClick={() => setLanguage(isAr ? "en" : "ar")}
-            className="text-xs font-black px-3 py-1 bg-white/20 rounded hover:bg-white/30 transition-colors"
+            className="border border-gray-200 rounded px-2 py-0.5 flex items-center gap-1.5 text-[10px] sm:text-xs font-medium text-[#003E66] hover:bg-gray-50 transition-colors"
           >
-            {isAr ? "EN" : "AR"}
+            {isAr ? "English" : "العربية"} 
+            <span className="bg-[#003E66] text-white px-1 rounded text-[8px] sm:text-[9px]">A文</span>
+          </button>
+          <button className="text-[#003E66]">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
         </div>
-
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div className="md:hidden bg-[#70112d] px-4 py-4 space-y-2">
-            {menuItems.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => {
-                  navigate(item.href);
-                  setMenuOpen(false);
-                }}
-                className="block w-full text-left text-sm font-bold py-2 hover:opacity-80 transition-opacity"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
     </header>
   );
