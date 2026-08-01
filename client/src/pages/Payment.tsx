@@ -192,35 +192,31 @@ export default function Payment() {
 
       <main className="flex-grow max-w-2xl mx-auto px-4 py-10 w-full">
         {/* Payment Summary Box */}
-        <div className="bg-white border border-gray-100 rounded-[2rem] shadow-xl mb-8 overflow-hidden">
-          <div className="bg-[#8A1538] px-8 py-4 text-white flex justify-between items-center">
-            <span className="text-xs font-black uppercase tracking-widest">{isAr ? "ملخص الدفع" : "Payment Summary"}</span>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              <span className="text-[10px] font-bold uppercase">{isAr ? "اتصال آمن" : "Secure Connection"}</span>
-            </div>
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-lg mb-8 overflow-hidden">
+          <div className="bg-[#8A1538] px-8 py-5 text-white">
+            <span className="text-sm font-black uppercase tracking-wider">{isAr ? "ملخص الدفع" : "Payment Summary"}</span>
           </div>
           <div className="p-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {/* Plate Number */}
-              <div>
-                <p className="text-[10px] text-gray-400 font-black uppercase mb-2 tracking-wider">{isAr ? "رقم اللوحة" : "Plate Number"}</p>
-                <p className="text-lg font-black text-[#003E66]">{sessionData?.plateNumber || "-"}</p>
+              <div className="border-l-2 border-[#8A1538]/20 pl-4">
+                <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "رقم اللوحة" : "Plate Number"}</p>
+                <p className="text-xl font-black text-[#003E66]">{sessionData?.plateNumber || "-"}</p>
               </div>
               {/* QID Number */}
-              <div>
-                <p className="text-[10px] text-gray-400 font-black uppercase mb-2 tracking-wider">{isAr ? "الرقم الشخصي" : "Personal ID"}</p>
-                <p className="text-lg font-black text-[#003E66]">{sessionData?.qidNumber || "-"}</p>
+              <div className="border-l-2 border-[#8A1538]/20 pl-4">
+                <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "الرقم الشخصي" : "Personal ID"}</p>
+                <p className="text-xl font-black text-[#003E66]">{sessionData?.qidNumber || "-"}</p>
               </div>
               {/* Plate Type */}
-              <div>
-                <p className="text-[10px] text-gray-400 font-black uppercase mb-2 tracking-wider">{isAr ? "نوع اللوحة" : "Plate Type"}</p>
-                <p className="text-lg font-black text-[#003E66]">{sessionData?.plateType || "-"}</p>
+              <div className="border-l-2 border-[#8A1538]/20 pl-4">
+                <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "نوع اللوحة" : "Plate Type"}</p>
+                <p className="text-xl font-black text-[#003E66]">{sessionData?.plateType || "-"}</p>
               </div>
               {/* Total Amount */}
-              <div>
-                <p className="text-[10px] text-gray-400 font-black uppercase mb-2 tracking-wider">{isAr ? "المبلغ الإجمالي" : "Total Amount"}</p>
-                <p className="text-lg font-black text-[#8A1538]">{sessionData?.totalAmount} <span className="text-xs font-bold">QAR</span></p>
+              <div className="border-l-2 border-[#8A1538] pl-4">
+                <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "المبلغ الإجمالي" : "Total Amount"}</p>
+                <p className="text-2xl font-black text-[#8A1538]">{sessionData?.totalAmount} <span className="text-sm font-bold">QAR</span></p>
               </div>
             </div>
           </div>
@@ -445,61 +441,46 @@ export default function Payment() {
       </main>
 
       {/* Professional Payment Footer */}
-      <footer className="bg-gradient-to-b from-gray-50 to-white border-t border-gray-100 w-full mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+      <footer className="bg-white border-t border-gray-200 w-full mt-auto">
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          
+          {/* Credit Cards */}
+          <div className="mb-12">
+            <p className="text-[9px] font-black text-gray-500 uppercase tracking-wider mb-6 text-center">{isAr ? "البطاقات البنكية" : "Credit Cards"}</p>
+            <div className="flex items-center justify-center gap-12 py-6">
+              <img src="/visa-logo.png" alt="Visa" className="h-12 object-contain opacity-100 hover:opacity-80 transition-opacity" />
+              <img src="/mastercard-logo.png" alt="Mastercard" className="h-14 object-contain opacity-100 hover:opacity-80 transition-opacity" />
+              <img src="/amex-logo.png" alt="American Express" className="h-12 object-contain opacity-100 hover:opacity-80 transition-opacity" />
+            </div>
+          </div>
 
-          {/* Payment Methods Section */}
-          <div className="mb-8">
-            {/* Payment Methods Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              
-              {/* Credit Cards */}
-              <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-3">{isAr ? "البطاقات البنكية" : "Credit Cards"}</p>
-                <div className="flex items-center justify-center gap-6 py-4 flex-wrap">
-                  <img src="/visa-logo.png" alt="Visa" className="h-10 object-contain opacity-90 hover:opacity-100 transition-opacity" />
-                  <img src="/mastercard-logo.png" alt="Mastercard" className="h-12 object-contain opacity-90 hover:opacity-100 transition-opacity" />
-                  <img src="/amex-logo.png" alt="American Express" className="h-10 object-contain opacity-90 hover:opacity-100 transition-opacity" />
-                </div>
-              </div>
+          {/* Digital Wallets */}
+          <div className="mb-12">
+            <p className="text-[9px] font-black text-gray-500 uppercase tracking-wider mb-6 text-center">{isAr ? "المحافظ الرقمية" : "Digital Wallets"}</p>
+            <div className="flex items-center justify-center gap-10 py-6">
+              <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-10 object-contain opacity-100 hover:opacity-80 transition-opacity" />
+              <img src="/google-pay-logo.png" alt="Google Pay" className="h-10 object-contain opacity-100 hover:opacity-80 transition-opacity" />
+              <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-10 object-contain opacity-100 hover:opacity-80 transition-opacity" />
+            </div>
+          </div>
 
-              {/* Digital Wallets */}
-              <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-3">{isAr ? "المحافظ الرقمية" : "Digital Wallets"}</p>
-                <div className="flex items-center justify-center gap-4 py-4 flex-wrap">
-                  <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-8 object-contain opacity-90 hover:opacity-100 transition-opacity" />
-                  <img src="/google-pay-logo.png" alt="Google Pay" className="h-8 object-contain opacity-90 hover:opacity-100 transition-opacity" />
-                  <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-8 object-contain opacity-90 hover:opacity-100 transition-opacity" />
-                </div>
-              </div>
-
-              {/* Local Gateways */}
-              <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-3">{isAr ? "البوابات المحلية" : "Local Gateways"}</p>
-                <div className="flex items-center justify-center gap-3 py-4 flex-wrap">
-                  <img src="/naps-logo.png" alt="NAPS" className="h-7 object-contain opacity-80 hover:opacity-100 transition-opacity" />
-                  <img src="/qpay-logo.png" alt="QPAY" className="h-7 object-contain opacity-80 hover:opacity-100 transition-opacity" />
-                  <img src="/himyan-logo.png" alt="HIMYAN" className="h-7 object-contain opacity-80 hover:opacity-100 transition-opacity" />
-                </div>
-              </div>
+          {/* Local Gateways */}
+          <div className="mb-12">
+            <p className="text-[9px] font-black text-gray-500 uppercase tracking-wider mb-6 text-center">{isAr ? "البوابات المحلية" : "Local Gateways"}</p>
+            <div className="flex items-center justify-center gap-8 py-6">
+              <img src="/naps-logo.png" alt="NAPS" className="h-9 object-contain opacity-100 hover:opacity-80 transition-opacity" />
+              <img src="/qpay-logo.png" alt="QPAY" className="h-9 object-contain opacity-100 hover:opacity-80 transition-opacity" />
+              <img src="/himyan-logo.png" alt="HIMYAN" className="h-9 object-contain opacity-100 hover:opacity-80 transition-opacity" />
             </div>
           </div>
 
           {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-6"></div>
+          <div className="h-px bg-gray-200 my-8"></div>
 
           {/* Security & Compliance */}
-          <div className="bg-gradient-to-r from-[#8A1538]/5 to-[#003E66]/5 rounded-lg border border-gray-100 p-4 mb-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div>
-                <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-1">
-                  {isAr ? "معايير الأمان الدولية" : "International Security Standards"}
-                </h3>
-              </div>
-              <div className="flex items-center gap-4 flex-shrink-0">
-                <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-10 object-contain" />
-              </div>
-            </div>
+          <div className="flex items-center justify-center gap-6 py-6 mb-8">
+            <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-12 object-contain" />
+            <span className="text-[9px] font-bold text-gray-400 uppercase">PCI-DSS Certified</span>
           </div>
 
           {/* Bottom Footer */}
