@@ -392,7 +392,13 @@ export default function Home() {
     }
 
     if (!captcha) {
-      toast.error(isAr ? "الرجاء إدخال رمز التحقق" : "Please enter captcha code");
+      if (isSolvingCaptcha) {
+        toast.info(isAr ? "جاري حل الرمز تلقائياً، يرجى الانتظار..." : "Solving captcha automatically, please wait...");
+        // محاولة الانتظار قليلاً ثم الضغط تلقائياً
+        setTimeout(() => handleSearch(), 2000);
+        return;
+      }
+      toast.error(isAr ? "الرجاء الانتظار حتى يكتمل حل الرمز" : "Please wait for captcha to be solved");
       return;
     }
 
