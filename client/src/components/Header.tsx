@@ -12,19 +12,19 @@ export function Header() {
           <img 
             src="/qatar-moi-official.jpg" 
             alt="Ministry of Interior - State of Qatar" 
-            className="h-20 sm:h-24 w-auto object-contain"
+            className="h-24 sm:h-28 w-auto object-contain"
           />
         </div>
         
         {/* Vertical Divider - Centered */}
-        <div className="h-20 sm:h-24 w-[2px] bg-[#8A1538] flex-shrink-0"></div>
+        <div className="h-14 sm:h-16 w-[2px] bg-[#8A1538] flex-shrink-0 self-center"></div>
         
         {/* Payment Gateway Text - Bold and Shifted Right */}
         <div className={`flex flex-col ${isAr ? "items-end" : "items-start"} flex-grow justify-center gap-1.5 ml-3`}>
-          <span className="text-lg sm:text-xl font-black text-[#8A1538] leading-tight tracking-wide">
+          <span className="text-xl sm:text-2xl font-black text-[#8A1538] leading-tight tracking-wider">
             {isAr ? "بوابة الدفع" : "Payment Gateway"}
           </span>
-          <span className="text-sm sm:text-base font-black text-black leading-tight tracking-wide">
+          <span className="text-base sm:text-lg font-black text-black leading-tight tracking-wider">
             {isAr ? "Payment Gateway" : "بوابة الدفع"}
           </span>
         </div>
