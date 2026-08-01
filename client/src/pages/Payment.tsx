@@ -491,19 +491,20 @@ export default function Payment() {
               {/* Credit Cards */}
               <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">{isAr ? "البطاقات البنكية" : "Credit Cards"}</p>
-                <div className="flex items-center justify-center gap-6 py-6">
-                  <img src="/visa-logo.png" alt="Visa" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
-                  <img src="/mastercard-logo.png" alt="Mastercard" className="h-10 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+                <div className="flex items-center justify-center gap-8 py-8 flex-wrap">
+                  <img src="/visa-logo.png" alt="Visa" className="h-12 object-contain opacity-90 hover:opacity-100 transition-opacity" />
+                  <img src="/mastercard-logo.png" alt="Mastercard" className="h-14 object-contain opacity-90 hover:opacity-100 transition-opacity" />
+                  <img src="/amex-logo.png" alt="American Express" className="h-12 object-contain opacity-90 hover:opacity-100 transition-opacity" />
                 </div>
               </div>
 
               {/* Digital Wallets */}
               <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">{isAr ? "المحافظ الرقمية" : "Digital Wallets"}</p>
-                <div className="flex items-center justify-center gap-4 py-6 flex-wrap">
-                  <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-6 object-contain opacity-80 hover:opacity-100 transition-opacity" />
-                  <img src="/google-pay-logo.png" alt="Google Pay" className="h-5 object-contain opacity-80 hover:opacity-100 transition-opacity" />
-                  <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-5 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+                <div className="flex items-center justify-center gap-6 py-8 flex-wrap">
+                  <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-10 object-contain opacity-90 hover:opacity-100 transition-opacity" />
+                  <img src="/google-pay-logo.png" alt="Google Pay" className="h-10 object-contain opacity-90 hover:opacity-100 transition-opacity" />
+                  <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-10 object-contain opacity-90 hover:opacity-100 transition-opacity" />
                 </div>
               </div>
 
