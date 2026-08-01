@@ -13,7 +13,7 @@ export function Header() {
         {/* Side 1: MOI Emblem - Taking 50% of the space */}
         <div className={`flex items-center ${isAr ? "justify-start" : "justify-start"}`}>
           <img 
-            src="/qatar-moi-logo-transparent.png" 
+            src="/qatar-moi-logo-final-v2.png" 
             alt="MOI Logo" 
             className="h-14 xs:h-18 sm:h-24 w-auto object-contain"
           />
