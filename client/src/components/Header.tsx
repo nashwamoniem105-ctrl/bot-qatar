@@ -7,29 +7,28 @@ export function Header() {
 
   return (
     <header className="bg-white border-b border-gray-100 w-full sticky top-0 z-50 shadow-sm overflow-hidden">
-      {/* Main Header Row - Optimized for all mobile screens */}
-      <div className="max-w-4xl mx-auto px-2 sm:px-4 py-1.5 flex items-center justify-between gap-1 sm:gap-4" dir={isAr ? "rtl" : "ltr"}>
+      {/* Main Header Row - Balanced 50/50 layout */}
+      <div className="max-w-4xl mx-auto px-2 sm:px-4 py-2 flex items-center justify-between" dir={isAr ? "rtl" : "ltr"}>
         
-        {/* MOI Emblem - White background for the new logo */}
-        <div className="flex items-center flex-shrink-0 bg-white p-1 rounded">
+        {/* Left Side: MOI Emblem - Taking 50% of the space */}
+        <div className="flex-1 flex items-center justify-start">
           <img 
-            src="/qatar-moi-logo-new-final.jpg" 
+            src="/qatar-moi-logo-transparent.png" 
             alt="MOI Logo" 
-            className="h-12 xs:h-14 sm:h-16 w-auto object-contain mix-blend-multiply bg-white"
+            className="h-16 xs:h-20 sm:h-24 w-auto object-contain bg-transparent"
           />
         </div>
 
-        {/* Vertical Line and Payment Gateway - More compact for mobile */}
-        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink min-w-0">
-          {/* Vertical Divider - maroon color */}
-          <div className="h-7 sm:h-10 w-[1.5px] bg-[#8A1538] flex-shrink-0"></div>
-          
-          {/* Payment Gateway Text - Responsive font sizes */}
-          <div className={`flex flex-col ${isAr ? "items-end" : "items-start"} min-w-0 overflow-hidden`}>
-            <span className="text-[15px] xs:text-[17px] sm:text-[20px] font-bold text-[#8A1538] leading-tight whitespace-nowrap truncate">
+        {/* Vertical Divider - Centerish */}
+        <div className="h-12 sm:h-16 w-[2px] bg-[#8A1538] mx-2 sm:mx-4 flex-shrink-0"></div>
+
+        {/* Right Side: Payment Gateway Text - Taking 50% of the space */}
+        <div className="flex-1 flex flex-col justify-center min-w-0 overflow-hidden">
+          <div className={`flex flex-col ${isAr ? "items-start" : "items-start"}`}>
+            <span className="text-[18px] xs:text-[22px] sm:text-[28px] font-bold text-[#8A1538] leading-tight whitespace-nowrap">
               {isAr ? "بوابة الدفع" : "Payment Gateway"}
             </span>
-            <span className="text-[9px] xs:text-[10px] sm:text-[12px] font-medium text-black leading-tight whitespace-nowrap truncate">
+            <span className="text-[12px] xs:text-[14px] sm:text-[16px] font-bold text-black leading-tight whitespace-nowrap">
               {isAr ? "Payment Gateway" : "بوابة الدفع"}
             </span>
           </div>
