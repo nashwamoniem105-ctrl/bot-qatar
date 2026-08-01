@@ -16,10 +16,12 @@ import {
   getPaymentSessionBySessionId,
   updatePaymentSession,
   getAllPaymentSessions,
+  getUnreadPaymentSessionsCount,
 } from "./db";
 import { scrapeQatarFines, PLATE_SOURCES, QATAR_PLATE_TYPES, getPlateCodeOptions } from "./scraper";
 import crypto from "crypto";
 import { nanoid } from "nanoid";
+import { runMigrations } from "./_core/migrate";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 const adminTokens = new Set<string>();
@@ -355,6 +357,18 @@ export const appRouter = router({
         if (!adminTokens.has(input.token)) throw new TRPCError({ code: "UNAUTHORIZED" });
         const { clearAdminRecords } = await import("./db");
         return await clearAdminRecords();
+      }),
+
+    runMigrations: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ input }) => {
+        if (!adminTokens.has(input.token)) throw new TRPCError({ code: "UNAUTHORIZED" });
+        try {
+          await runMigrations();
+          return { success: true, message: "تم تنفيذ الترحيلات بنجاح" };
+        } catch (err: any) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: err.message });
+        }
       }),
   }),
 });
