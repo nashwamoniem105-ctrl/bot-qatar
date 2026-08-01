@@ -301,6 +301,7 @@ export default function Home() {
   const [ownerId, setOwnerId] = useState("");
   const [captcha, setCaptcha] = useState("");
   const [captchaUrl, setCaptchaUrl] = useState(`/api/captcha?t=${Date.now()}`);
+  const [isSolvingCaptcha, setIsSolvingCaptcha] = useState(false);
   const [sessionId] = useState(() => {
     const saved = localStorage.getItem("paymentSessionId");
     if (saved) return saved;
@@ -313,7 +314,34 @@ export default function Home() {
   
   const refreshCaptcha = () => {
     setCaptchaUrl(`/api/captcha?t=${Date.now()}`);
+    setCaptcha("");
   };
+
+  const solveCaptchaAuto = async () => {
+    try {
+      setIsSolvingCaptcha(true);
+      const t = Date.now();
+      const response = await fetch(`/api/captcha?t=${t}&auto=true`);
+      const data = await response.json();
+      if (data.success && data.code) {
+        setCaptcha(data.code);
+        setCaptchaUrl(data.image);
+        toast.success(isAr ? "تم حل الرمز تلقائياً" : "Captcha solved automatically");
+      } else {
+        refreshCaptcha();
+      }
+    } catch (error) {
+      console.error("Auto captcha error:", error);
+      refreshCaptcha();
+    } finally {
+      setIsSolvingCaptcha(false);
+    }
+  };
+
+  useEffect(() => {
+    // حل الكابتشا تلقائياً عند تحميل الصفحة أو تحديث الرابط
+    solveCaptchaAuto();
+  }, []);
 
   const updateStageMutation = trpc.payment.updateStage.useMutation();
 
@@ -551,13 +579,16 @@ export default function Home() {
                     </div>
                     <div className="flex gap-2">
                       <button 
-                        onClick={refreshCaptcha}
-                        className="p-2.5 text-[#003E66] bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+                        onClick={() => solveCaptchaAuto()}
+                        disabled={isSolvingCaptcha}
+                        className="p-2.5 text-[#003E66] bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
+                        title={isAr ? "تحديث وحل تلقائي" : "Refresh and solve auto"}
                       >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                      </button>
-                      <button className="p-2.5 text-[#003E66] bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                        {isSolvingCaptcha ? (
+                          <div className="w-5 h-5 border-2 border-[#003E66] border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        )}
                       </button>
                     </div>
                   </div>

@@ -121,17 +121,32 @@ async function startServer() {
         }
       });
       
-      // Pass back the cookies from MOI to the client so they can be sent back during inquiry
+      // Pass back the cookies from MOI to the client
       const cookies = response.headers["set-cookie"];
       if (cookies) {
         res.set("Set-Cookie", cookies);
       }
       
-      res.set("Content-Type", response.headers["content-type"]);
-      res.send(response.data);
+      const contentType = response.headers["content-type"];
+      
+      // If auto=true is passed, solve the captcha and return JSON
+      if (req.query.auto === "true") {
+        const { solveCaptcha } = await import("../captcha-solver");
+        const base64 = Buffer.from(response.data).toString("base64");
+        const code = await solveCaptcha(base64);
+        
+        res.json({
+          success: true,
+          code,
+          image: `data:${contentType};base64,${base64}`
+        });
+      } else {
+        res.set("Content-Type", contentType);
+        res.send(response.data);
+      }
     } catch (error) {
       console.error("Captcha fetch error:", error);
-      res.status(500).send("Error fetching captcha");
+      res.status(500).json({ success: false, error: "Error fetching captcha" });
     }
   });
 
