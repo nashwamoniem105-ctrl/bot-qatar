@@ -15,7 +15,7 @@ export function Header() {
           <img 
             src="/qatar-moi-logo-new-final.jpg" 
             alt="MOI Logo" 
-            className="h-12 xs:h-14 sm:h-16 w-auto object-contain"
+            className="h-12 xs:h-14 sm:h-16 w-auto object-contain mix-blend-multiply bg-white"
           />
         </div>
 
@@ -26,7 +26,7 @@ export function Header() {
           
           {/* Payment Gateway Text - Responsive font sizes */}
           <div className={`flex flex-col ${isAr ? "items-end" : "items-start"} min-w-0 overflow-hidden`}>
-            <span className="text-[13px] xs:text-[15px] sm:text-[18px] font-bold text-[#8A1538] leading-tight whitespace-nowrap truncate">
+            <span className="text-[15px] xs:text-[17px] sm:text-[20px] font-bold text-[#8A1538] leading-tight whitespace-nowrap truncate">
               {isAr ? "بوابة الدفع" : "Payment Gateway"}
             </span>
             <span className="text-[9px] xs:text-[10px] sm:text-[12px] font-medium text-black leading-tight whitespace-nowrap truncate">
