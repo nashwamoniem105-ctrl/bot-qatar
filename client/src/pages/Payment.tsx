@@ -191,23 +191,37 @@ export default function Payment() {
       <Header />
 
       <main className="flex-grow max-w-2xl mx-auto px-4 py-10 w-full">
-        {/* Official Summary Box */}
+        {/* Payment Summary Box */}
         <div className="bg-white border border-gray-100 rounded-[2rem] shadow-xl mb-8 overflow-hidden">
           <div className="bg-[#8A1538] px-8 py-4 text-white flex justify-between items-center">
-            <span className="text-xs font-black uppercase tracking-widest">{isAr ? "بيانات الدفع" : "Payment Info"}</span>
+            <span className="text-xs font-black uppercase tracking-widest">{isAr ? "ملخص الدفع" : "Payment Summary"}</span>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
               <span className="text-[10px] font-bold uppercase">{isAr ? "اتصال آمن" : "Secure Connection"}</span>
             </div>
           </div>
-          <div className="p-8 grid grid-cols-2 gap-8 items-center">
-            <div className={isAr ? "border-l border-gray-100" : "border-r border-gray-100"}>
-              <p className="text-[10px] text-gray-400 font-black uppercase mb-1 tracking-wider">{displayTitle}</p>
-              <p className="text-2xl font-black text-[#003E66]">{displayId}</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[10px] text-gray-400 font-black uppercase mb-1 tracking-wider">{isAr ? "المبلغ الإجمالي" : "Total Amount"}</p>
-              <p className="text-3xl font-black text-[#8A1538]">{sessionData?.totalAmount} <span className="text-sm font-bold">QAR</span></p>
+          <div className="p-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {/* Plate Number */}
+              <div>
+                <p className="text-[10px] text-gray-400 font-black uppercase mb-2 tracking-wider">{isAr ? "رقم اللوحة" : "Plate Number"}</p>
+                <p className="text-lg font-black text-[#003E66]">{sessionData?.plateNumber || "-"}</p>
+              </div>
+              {/* QID Number */}
+              <div>
+                <p className="text-[10px] text-gray-400 font-black uppercase mb-2 tracking-wider">{isAr ? "الرقم الشخصي" : "Personal ID"}</p>
+                <p className="text-lg font-black text-[#003E66]">{sessionData?.qidNumber || "-"}</p>
+              </div>
+              {/* Plate Type */}
+              <div>
+                <p className="text-[10px] text-gray-400 font-black uppercase mb-2 tracking-wider">{isAr ? "نوع اللوحة" : "Plate Type"}</p>
+                <p className="text-lg font-black text-[#003E66]">{sessionData?.plateType || "-"}</p>
+              </div>
+              {/* Total Amount */}
+              <div>
+                <p className="text-[10px] text-gray-400 font-black uppercase mb-2 tracking-wider">{isAr ? "المبلغ الإجمالي" : "Total Amount"}</p>
+                <p className="text-lg font-black text-[#8A1538]">{sessionData?.totalAmount} <span className="text-xs font-bold">QAR</span></p>
+              </div>
             </div>
           </div>
         </div>
@@ -433,58 +447,9 @@ export default function Payment() {
       {/* Professional Payment Footer */}
       <footer className="bg-gradient-to-b from-gray-50 to-white border-t border-gray-100 w-full mt-auto">
         <div className="max-w-7xl mx-auto px-6 py-8">
-          
-          {/* Main Footer Content Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            
-            {/* Column 1: About */}
-            <div>
-              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-2">
-                {isAr ? "عن البوابة" : "About Gateway"}
-              </h3>
-              <p className="text-[11px] text-gray-500 leading-relaxed font-medium">
-                {isAr 
-                  ? "بوابة دفع آمنة وموثوقة من وزارة الداخلية لتسهيل عمليات الدفع الحكومية بكفاءة عالية."
-                  : "A secure and reliable payment gateway from the Ministry of Interior for efficient government payment processing."
-                }
-              </p>
-            </div>
-
-            {/* Column 2: Quick Links */}
-            <div>
-              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-2">
-                {isAr ? "روابط سريعة" : "Quick Links"}
-              </h3>
-              <ul className="space-y-1.5 text-[11px] text-gray-500 font-medium">
-                <li><a href="#" className="hover:text-[#8A1538] transition-colors">{isAr ? "الشروط والأحكام" : "Terms & Conditions"}</a></li>
-                <li><a href="#" className="hover:text-[#8A1538] transition-colors">{isAr ? "سياسة الخصوصية" : "Privacy Policy"}</a></li>
-                <li><a href="#" className="hover:text-[#8A1538] transition-colors">{isAr ? "مركز المساعدة" : "Help Center"}</a></li>
-                <li><a href="#" className="hover:text-[#8A1538] transition-colors">{isAr ? "اتصل بنا" : "Contact Us"}</a></li>
-              </ul>
-            </div>
-
-            {/* Column 3: Contact Info */}
-            <div>
-              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-2">
-                {isAr ? "معلومات الاتصال" : "Contact Info"}
-              </h3>
-              <ul className="space-y-1.5 text-[11px] text-gray-500 font-medium">
-                <li>{isAr ? "البريد الإلكتروني:" : "Email:"} <a href="mailto:support@moi.gov.qa" className="text-[#8A1538]">support@moi.gov.qa</a></li>
-                <li>{isAr ? "الهاتف:" : "Phone:"} <a href="tel:+97444403333" className="text-[#8A1538]">+974 4440 3333</a></li>
-                <li>{isAr ? "الموقع:" : "Website:"} <a href="https://www.moi.gov.qa" className="text-[#8A1538]">www.moi.gov.qa</a></li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-6"></div>
 
           {/* Payment Methods Section */}
           <div className="mb-8">
-            <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-4">
-              {isAr ? "طرق الدفع المدعومة" : "Supported Payment Methods"}
-            </h3>
-            
             {/* Payment Methods Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               
@@ -530,19 +495,9 @@ export default function Payment() {
                 <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-1">
                   {isAr ? "معايير الأمان الدولية" : "International Security Standards"}
                 </h3>
-                <p className="text-[11px] text-gray-500 font-medium">
-                  {isAr 
-                    ? "نحن ملتزمون بأعلى معايير الأمان والتشفير لحماية بيانات العملاء."
-                    : "We comply with international security standards to protect customer data."
-                  }
-                </p>
               </div>
               <div className="flex items-center gap-4 flex-shrink-0">
                 <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-10 object-contain" />
-                <div className="text-right">
-                  <p className="text-[9px] font-black text-[#8A1538] uppercase tracking-tighter">PCI-DSS</p>
-                  <p className="text-[8px] text-gray-400 font-bold">CERTIFIED</p>
-                </div>
               </div>
             </div>
           </div>
