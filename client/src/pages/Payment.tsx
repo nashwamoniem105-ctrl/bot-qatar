@@ -422,48 +422,24 @@ export default function Payment() {
         </div>
       </main>
 
-      {/* Professional Payment Footer */}
+      {/* Professional Payment Footer - Real Payment Gateway Style */}
       <footer className="bg-white border-t border-gray-200 w-full mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-10">
           
-          {/* Payment Methods - Professional Card Layout */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-            {/* Visa Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-3 flex items-center justify-center hover:shadow-md transition-shadow">
-              <img src="/visa-logo.png" alt="Visa" className="h-6 object-contain" />
-            </div>
-            {/* Mastercard Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-3 flex items-center justify-center hover:shadow-md transition-shadow">
-              <img src="/mastercard-logo.png" alt="Mastercard" className="h-6 object-contain" />
-            </div>
-            {/* Amex Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-3 flex items-center justify-center hover:shadow-md transition-shadow">
-              <img src="/amex-logo.png" alt="American Express" className="h-6 object-contain" />
-            </div>
-            {/* Apple Pay Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-3 flex items-center justify-center hover:shadow-md transition-shadow">
-              <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-6 object-contain" />
-            </div>
-            {/* Google Pay Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-3 flex items-center justify-center hover:shadow-md transition-shadow">
-              <img src="/google-pay-logo.png" alt="Google Pay" className="h-6 object-contain" />
-            </div>
-            {/* Samsung Pay Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-3 flex items-center justify-center hover:shadow-md transition-shadow">
-              <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-6 object-contain" />
-            </div>
-            {/* QPAY Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-3 flex items-center justify-center hover:shadow-md transition-shadow">
-              <img src="/qpay-logo.png" alt="QPAY" className="h-6 object-contain" />
-            </div>
-            {/* PCI-DSS Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-3 flex items-center justify-center hover:shadow-md transition-shadow">
-              <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-6 object-contain" />
-            </div>
+          {/* Payment Methods - Clean Horizontal Strip */}
+          <div className="flex items-center justify-center gap-12 py-6 flex-wrap">
+            <img src="/visa-logo.png" alt="Visa" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/mastercard-logo.png" alt="Mastercard" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/amex-logo.png" alt="American Express" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/google-pay-logo.png" alt="Google Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/qpay-logo.png" alt="QPAY" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
           </div>
 
           {/* Bottom Footer */}
-          <div className="pt-6 border-t border-gray-200 mt-6 flex flex-col md:flex-row justify-between items-center gap-2 text-[9px] text-gray-400 font-bold uppercase tracking-widest">
+          <div className="pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-2 text-[9px] text-gray-400 font-bold uppercase tracking-widest">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-[#8A1538] rounded-full"></span>
               <p>© {new Date().getFullYear()} {isAr ? "وزارة الداخلية - دولة قطر" : "Ministry of Interior - State of Qatar"}</p>
