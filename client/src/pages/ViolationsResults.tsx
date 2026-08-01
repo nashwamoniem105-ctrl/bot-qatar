@@ -50,12 +50,23 @@ export default function ViolationsResults() {
   const totalAmount = data?.totalAmount || "0";
   const hasViolations = violations.length > 0;
 
-  const displayId = data?.qidNumber || data?.establishmentId || data?.plateNumber || "-";
-  const displayTitle = data?.qidNumber 
-    ? (isAr ? "الرقم الشخصي" : "Personal ID") 
-    : data?.establishmentId 
-      ? (isAr ? "رقم المنشأة" : "Establishment ID")
-      : (isAr ? "رقم اللوحة" : "Plate Number");
+  // Smart Data Display Logic
+  let displayTitle = "";
+  let displayValue = "";
+  let secondaryTitle = isAr ? "النوع" : "Type";
+  let secondaryValue = "-";
+
+  if (data?.qidNumber) {
+    displayTitle = isAr ? "الرقم الشخصي" : "Personal ID";
+    displayValue = data.qidNumber;
+  } else if (data?.establishmentId) {
+    displayTitle = isAr ? "رقم قيد المنشأة" : "Establishment ID";
+    displayValue = data.establishmentId;
+  } else if (data?.plateNumber) {
+    displayTitle = isAr ? "رقم المركبة" : "Vehicle Plate";
+    displayValue = data.plateNumber;
+    secondaryValue = data.plateType || "-";
+  }
 
   return (
     <div className="min-h-screen bg-white flex flex-col" dir={isAr ? "rtl" : "ltr"}>
@@ -69,7 +80,7 @@ export default function ViolationsResults() {
       </div>
 
       <main className="flex-grow container mx-auto px-4 py-8 max-w-xl">
-        {/* Dark Blue Vehicle Info Card */}
+        {/* Dark Blue Vehicle Info Card - Smart & Dynamic */}
         <div className="bg-[#1B3E5F] rounded-lg shadow-md overflow-hidden mb-8 border border-[#1B3E5F]">
           <div className="p-4 border-b border-[#2C5275] text-center">
             <h2 className="text-white text-xl font-bold">{isAr ? "بيانات المركبة" : "Vehicle Details"}</h2>
@@ -77,7 +88,7 @@ export default function ViolationsResults() {
           <div className="p-8 space-y-6 text-center">
             <div>
               <p className="text-white/80 text-sm mb-2">{displayTitle}</p>
-              <p className="text-[#5B9BD5] text-2xl font-bold tracking-wider">{displayId}</p>
+              <p className="text-[#5B9BD5] text-2xl font-bold tracking-wider">{displayValue}</p>
             </div>
             
             <div className="border-t border-[#2C5275] pt-4">
@@ -86,8 +97,8 @@ export default function ViolationsResults() {
             </div>
 
             <div className="border-t border-[#2C5275] pt-4">
-              <p className="text-white/80 text-sm mb-2">{isAr ? "النوع" : "Type"}</p>
-              <p className="text-white text-xl font-bold">-</p>
+              <p className="text-white/80 text-sm mb-2">{secondaryTitle}</p>
+              <p className="text-white text-xl font-bold">{secondaryValue}</p>
             </div>
           </div>
         </div>
