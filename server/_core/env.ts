@@ -22,4 +22,5 @@ export const ENV = {
   isProduction: process.env.NODE_ENV === "production",
   forgeApiUrl: normalizeEnvValue(process.env.BUILT_IN_FORGE_API_URL),
   forgeApiKey: normalizeEnvValue(process.env.BUILT_IN_FORGE_API_KEY),
+  proxyUrl: normalizeEnvValue(process.env.PROXY_URL || process.env.HTTPS_PROXY || process.env.HTTP_PROXY),
 };

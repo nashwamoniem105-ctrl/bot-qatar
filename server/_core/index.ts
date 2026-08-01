@@ -111,15 +111,29 @@ async function startServer() {
   app.get("/api/captcha", async (req, res) => {
     try {
       const axios = (await import("axios")).default;
-      const response = await axios.get("https://fees2.moi.gov.qa/moipay/captcha", {
-        params: { t: req.query.t },
+      const { ENV } = await import("./env");
+      
+      const config: any = {
+        params: { t: req.query.t || Date.now() },
         responseType: "arraybuffer",
-        withCredentials: true,
         headers: {
           "Referer": "https://fees2.moi.gov.qa/moipay/inquiry/violation",
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        }
-      });
+          "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+          "Accept-Language": "ar,en;q=0.9",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Connection": "keep-alive"
+        },
+        timeout: 15000,
+        validateStatus: () => true
+      };
+
+      if (ENV.proxyUrl) {
+        const { ProxyAgent } = await import("proxy-agent");
+        config.httpAgent = new ProxyAgent(ENV.proxyUrl);
+        config.httpsAgent = config.httpAgent;
+      }
+
+      const response = await axios.get("https://fees2.moi.gov.qa/moipay/captcha", config);
       
       // Pass back the cookies from MOI to the client
       const cookies = response.headers["set-cookie"];

@@ -42,7 +42,6 @@ export default function ViolationsResults() {
           <Skeleton className="h-12 w-48 mb-8" />
           <Skeleton className="h-64 w-full rounded-xl" />
         </main>
-        <Footer />
       </div>
     );
   }

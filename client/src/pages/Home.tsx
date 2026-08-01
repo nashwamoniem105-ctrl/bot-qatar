@@ -574,8 +574,21 @@ export default function Home() {
               <div className="pt-2">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden h-12 flex-shrink-0">
-                      <img src={captchaUrl} alt="captcha" className="h-full w-32 object-cover" />
+                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden h-12 flex-shrink-0 flex items-center justify-center w-32 relative">
+                      {isSolvingCaptcha && (
+                        <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+                          <div className="w-5 h-5 border-2 border-[#003E66] border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                      <img 
+                        src={captchaUrl} 
+                        alt="captcha" 
+                        className={`h-full w-full object-contain transition-opacity duration-300 ${isSolvingCaptcha ? 'opacity-30' : 'opacity-100'}`}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Crect width='120' height='40' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='10' fill='%239ca3af'%3ELoading...%3C/text%3E%3C/svg%3E";
+                        }}
+                      />
                     </div>
                     <div className="flex gap-2">
                       <button 

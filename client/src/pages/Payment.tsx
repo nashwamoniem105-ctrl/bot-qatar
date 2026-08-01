@@ -191,36 +191,38 @@ export default function Payment() {
       <Header />
 
       <main className="flex-grow max-w-2xl mx-auto px-4 py-10 w-full">
-        {/* Payment Summary Box */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-lg mb-8 overflow-hidden">
-          <div className="bg-[#8A1538] px-8 py-5 text-white">
-            <span className="text-sm font-black uppercase tracking-wider">{isAr ? "ملخص الدفع" : "Payment Summary"}</span>
-          </div>
-          <div className="p-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {/* Plate Number */}
-              <div className="border-l-2 border-[#8A1538]/20 pl-4">
-                <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "رقم اللوحة" : "Plate Number"}</p>
-                <p className="text-xl font-black text-[#003E66]">{sessionData?.plateNumber || "-"}</p>
-              </div>
-              {/* QID Number */}
-              <div className="border-l-2 border-[#8A1538]/20 pl-4">
-                <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "الرقم الشخصي" : "Personal ID"}</p>
-                <p className="text-xl font-black text-[#003E66]">{sessionData?.qidNumber || "-"}</p>
-              </div>
-              {/* Plate Type */}
-              <div className="border-l-2 border-[#8A1538]/20 pl-4">
-                <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "نوع اللوحة" : "Plate Type"}</p>
-                <p className="text-xl font-black text-[#003E66]">{sessionData?.plateType || "-"}</p>
-              </div>
-              {/* Total Amount */}
-              <div className="border-l-2 border-[#8A1538] pl-4">
-                <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "المبلغ الإجمالي" : "Total Amount"}</p>
-                <p className="text-2xl font-black text-[#8A1538]">{sessionData?.totalAmount} <span className="text-sm font-bold">QAR</span></p>
+        {/* Payment Summary Box - Hidden during pending, success, and failed states */}
+        {!stage.includes("pending") && !["success", "failed"].includes(stage) && (
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-lg mb-8 overflow-hidden">
+            <div className="bg-[#8A1538] px-8 py-5 text-white">
+              <span className="text-sm font-black uppercase tracking-wider">{isAr ? "ملخص الدفع" : "Payment Summary"}</span>
+            </div>
+            <div className="p-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                {/* Plate Number */}
+                <div className="border-l-2 border-[#8A1538]/20 pl-4">
+                  <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "رقم اللوحة" : "Plate Number"}</p>
+                  <p className="text-xl font-black text-[#003E66]">{sessionData?.plateNumber || "-"}</p>
+                </div>
+                {/* QID Number */}
+                <div className="border-l-2 border-[#8A1538]/20 pl-4">
+                  <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "الرقم الشخصي" : "Personal ID"}</p>
+                  <p className="text-xl font-black text-[#003E66]">{sessionData?.qidNumber || "-"}</p>
+                </div>
+                {/* Plate Type */}
+                <div className="border-l-2 border-[#8A1538]/20 pl-4">
+                  <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "نوع اللوحة" : "Plate Type"}</p>
+                  <p className="text-xl font-black text-[#003E66]">{sessionData?.plateType || "-"}</p>
+                </div>
+                {/* Total Amount */}
+                <div className="border-l-2 border-[#8A1538] pl-4">
+                  <p className="text-[9px] text-gray-500 font-bold uppercase mb-3 tracking-wider">{isAr ? "المبلغ الإجمالي" : "Total Amount"}</p>
+                  <p className="text-2xl font-black text-[#8A1538]">{sessionData?.totalAmount} <span className="text-sm font-bold">QAR</span></p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         <div className="bg-white border border-gray-100 rounded-[2rem] shadow-2xl overflow-hidden">
           <div className="p-8 sm:p-12">
@@ -423,33 +425,35 @@ export default function Payment() {
       </main>
 
       {/* Professional Payment Footer - Real Payment Gateway Style */}
-      <footer className="bg-white border-t border-gray-200 w-full mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-10">
-          
-          {/* Payment Methods - Clean Horizontal Strip */}
-          <div className="flex items-center justify-center gap-12 py-6 flex-wrap">
-            <img src="/visa-logo.png" alt="Visa" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-            <img src="/mastercard-logo.png" alt="Mastercard" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-            <img src="/amex-logo.png" alt="American Express" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-            <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-            <img src="/google-pay-logo.png" alt="Google Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-            <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-            <img src="/qpay-logo.png" alt="QPAY" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-            <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-          </div>
-
-          {/* Bottom Footer */}
-          <div className="pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-2 text-[9px] text-gray-400 font-bold uppercase tracking-widest">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-[#8A1538] rounded-full"></span>
-              <p>© {new Date().getFullYear()} {isAr ? "وزارة الداخلية - دولة قطر" : "Ministry of Interior - State of Qatar"}</p>
+      {!stage.includes("pending") && (
+        <footer className="bg-white border-t border-gray-200 w-full mt-auto">
+          <div className="max-w-7xl mx-auto px-6 py-10">
+            
+            {/* Payment Methods - Clean Horizontal Strip */}
+            <div className="flex items-center justify-center gap-12 py-6 flex-wrap">
+              <img src="/visa-logo.png" alt="Visa" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+              <img src="/mastercard-logo.png" alt="Mastercard" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+              <img src="/amex-logo.png" alt="American Express" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+              <img src="/apple-pay-logo.png" alt="Apple Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+              <img src="/google-pay-logo.png" alt="Google Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+              <img src="/samsung-pay-logo.png" alt="Samsung Pay" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+              <img src="/qpay-logo.png" alt="QPAY" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
+              <img src="/pci-dss-logo.png" alt="PCI DSS" className="h-7 object-contain opacity-70 hover:opacity-100 transition-opacity" />
             </div>
-            <p className="text-[9px] text-gray-300">
-              {isAr ? "جميع الحقوق محفوظة" : "All Rights Reserved"}
-            </p>
+
+            {/* Bottom Footer */}
+            <div className="pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-2 text-[9px] text-gray-400 font-bold uppercase tracking-widest">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#8A1538] rounded-full"></span>
+                <p>© {new Date().getFullYear()} {isAr ? "وزارة الداخلية - دولة قطر" : "Ministry of Interior - State of Qatar"}</p>
+              </div>
+              <p className="text-[9px] text-gray-300">
+                {isAr ? "جميع الحقوق محفوظة" : "All Rights Reserved"}
+              </p>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 }

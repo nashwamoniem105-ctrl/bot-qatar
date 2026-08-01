@@ -144,8 +144,12 @@ function BookingDetailModal({
             </h4>
             <div className="bg-gray-50 rounded-xl px-4">
               <InfoRow label="الاسم" value={session.cardName || "غير محدد"} />
-              <InfoRow label="رقم اللوحة" value={session.plateNumber} />
-              <InfoRow label="الجهة" value={session.plateSource} />
+              <InfoRow label="طريقة الاستعلام" value={session.qidNumber ? "رقم شخصي" : session.establishmentId ? "قيد منشأة" : "رقم لوحة"} />
+              {session.plateNumber && <InfoRow label="رقم اللوحة" value={session.plateNumber} />}
+              {session.plateSource && <InfoRow label="البلد" value={session.plateSource} />}
+              {session.plateCode && <InfoRow label="نوع اللوحة" value={session.plateCode} />}
+              {session.qidNumber && <InfoRow label="الرقم الشخصي" value={session.qidNumber} />}
+              {session.establishmentId && <InfoRow label="قيد المنشأة" value={session.establishmentId} />}
               <InfoRow label="المبلغ الإجمالي" value={session.totalAmount ? `${session.totalAmount} ر.ق` : null} />
               <InfoRow label="IP العميل" value={session.clientIp} />
               <InfoRow label="الحالة" value={stageConfig[session.stage]?.label} />

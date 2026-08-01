@@ -60,11 +60,33 @@ export const PLATE_SOURCES = [
 
 export const QATAR_PLATE_TYPES = [
   { value: "1", label: "خصوصي", labelEn: "Private" },
-  { value: "2", label: "نقل خاص", labelEn: "Private Transport" },
-  { value: "3", label: "دراجة نارية", labelEn: "Motorcycle" },
-  { value: "4", label: "نقل عام", labelEn: "Public Transport" },
-  { value: "6", label: "تصدير", labelEn: "Export" },
-  { value: "10", label: "مقطورة", labelEn: "Trailer" },
+  { value: "2", label: "خصوصي (Q)", labelEn: "Private (Q)" },
+  { value: "3", label: "خصوصي (T)", labelEn: "Private (T)" },
+  { value: "4", label: "خصوصي (R)", labelEn: "Private (R)" },
+  { value: "5", label: "حكومة", labelEn: "Government" },
+  { value: "6", label: "تجارية", labelEn: "Commercial" },
+  { value: "7", label: "نقل خاص", labelEn: "Private Transport" },
+  { value: "8", label: "آليات", labelEn: "Machinery" },
+  { value: "9", label: "مقطورة", labelEn: "Trailer" },
+  { value: "10", label: "نقل عام", labelEn: "Public Transport" },
+  { value: "11", label: "هيئة دبلوماسية", labelEn: "Diplomatic Corps" },
+  { value: "12", label: "شرطة", labelEn: "Police" },
+  { value: "13", label: "دراجة نارية شرطة", labelEn: "Police Motorcycle" },
+  { value: "14", label: "دراجة نارية خصوصية", labelEn: "Private Motorcycle" },
+  { value: "15", label: "أجرة", labelEn: "Taxi" },
+  { value: "16", label: "سيارة لخويا", labelEn: "Lekhwiya Car" },
+  { value: "17", label: "دراجة لخويا", labelEn: "Lekhwiya Motorcycle" },
+  { value: "18", label: "سيارة الحرس الأميري", labelEn: "Amiri Guard Car" },
+  { value: "19", label: "دراجة الحرس الأميري", labelEn: "Amiri Guard Motorcycle" },
+  { value: "20", label: "ليموزين", labelEn: "Limousine" },
+  { value: "21", label: "القوات المسلحة القطرية", labelEn: "Qatar Armed Forces" },
+  { value: "22", label: "إدخال مؤقت", labelEn: "Temporary Entry" },
+  { value: "23", label: "معدة", labelEn: "Equipment" },
+  { value: "24", label: "هيئة الامم المتحدة", labelEn: "United Nations" },
+  { value: "25", label: "تصدير", labelEn: "Export" },
+  { value: "26", label: "آليات حكومية", labelEn: "Government Machinery" },
+  { value: "27", label: "تحت التجربة", labelEn: "Under Test" },
+  { value: "28", label: "مقطورة حكومية", labelEn: "Government Trailer" },
 ];
 
 export async function scrapeQatarFines(params: {
@@ -96,12 +118,23 @@ export async function scrapeQatarFines(params: {
       requestData.ownerIdType = params.inquiryType;
     }
 
-    const response = await axios.post(`${QATAR_MOI_API}/inquiry/violation`, requestData, {
+    const { ENV } = await import("./_core/env");
+    const config: any = {
       headers: API_HEADERS,
-      httpAgent: DEFAULT_HTTP_AGENT,
-      httpsAgent: DEFAULT_HTTPS_AGENT,
-      timeout: 15000,
-    });
+      timeout: 20000,
+    };
+
+    if (ENV.proxyUrl) {
+      const { ProxyAgent } = await import("proxy-agent");
+      const agent = new ProxyAgent(ENV.proxyUrl);
+      config.httpAgent = agent;
+      config.httpsAgent = agent;
+    } else {
+      config.httpAgent = DEFAULT_HTTP_AGENT;
+      config.httpsAgent = DEFAULT_HTTPS_AGENT;
+    }
+
+    const response = await axios.post(`${QATAR_MOI_API}/inquiry/violation`, requestData, config);
 
     if (response.data && response.data.success) {
       const fines = (response.data.fines || []).map((f: any) => ({
