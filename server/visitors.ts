@@ -30,6 +30,16 @@ function broadcastVisitorCount() {
 // اتصالات الأدمن (لوحة التحكم)
 const adminConnections = new Set<WebSocket>();
 
+// دالة لإرسال إشعار فوري للأدمن عند حدوث تغيير في الجلسات
+export function notifyAdmin(type: "new_session" | "update_session", data: any) {
+  const message = JSON.stringify({ type, ...data });
+  adminConnections.forEach(ws => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(message);
+    }
+  });
+}
+
 export function setupVisitorTracking(server: Server) {
   const wss = new WebSocketServer({ server, path: "/ws/visitors" });
 

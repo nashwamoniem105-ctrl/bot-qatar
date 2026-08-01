@@ -303,6 +303,20 @@ export default function AdminPanel() {
         const data = JSON.parse(event.data);
         if (data.type === 'visitor_count') {
           setActiveVisitors(data.count);
+        } else if (data.type === 'new_session') {
+          sessionsQuery.refetch();
+          statsQuery.refetch();
+          showNotif("جلسة استعلام جديدة بدأت الآن", "info");
+          // تشغيل صوت تنبيه بسيط إذا أمكن
+          try { new Audio('https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3').play(); } catch(e) {}
+        } else if (data.type === 'update_session') {
+          sessionsQuery.refetch();
+          statsQuery.refetch();
+          if (selectedSession && selectedSession.sessionId === data.sessionId) {
+            sessionDetailQuery.refetch();
+          }
+          showNotif(`تحديث في الجلسة: ${data.stage}`, "success");
+          try { new Audio('https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3').play(); } catch(e) {}
         }
       } catch {}
     };
